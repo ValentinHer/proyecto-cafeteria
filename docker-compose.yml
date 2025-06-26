@@ -1,0 +1,10 @@
+services:
+  postgres-db:
+    image: postgres:17.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: reservacion_citas
+    ports:
+      - "5432:5432"
+    restart: always
