@@ -1,4 +1,4 @@
-package com.valentin.reservacion_citas.web.dto;
+package com.valentin.reservacion_citas.web.dto.response;
 
 public class MessageResDto {
 	private String message;

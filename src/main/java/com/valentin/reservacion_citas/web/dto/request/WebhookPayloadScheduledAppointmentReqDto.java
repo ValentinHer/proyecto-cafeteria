@@ -1,4 +1,4 @@
-package com.valentin.reservacion_citas.web.dto;
+package com.valentin.reservacion_citas.web.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WebhookPayloadScheduledEventReqDto {
+public class WebhookPayloadScheduledAppointmentReqDto {
 
 	@JsonProperty("name")
 	private String name;

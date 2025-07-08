@@ -1,4 +1,4 @@
-package com.valentin.reservacion_citas.web.dto;
+package com.valentin.reservacion_citas.web.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

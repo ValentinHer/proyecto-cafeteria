@@ -1,4 +1,4 @@
-package com.valentin.reservacion_citas.web.dto;
+package com.valentin.reservacion_citas.web.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ public class WebhookPayloadReqDto {
 	private String name;
 
 	@JsonProperty("scheduled_event")
-	private WebhookPayloadScheduledEventReqDto scheduledEvent;
+	private WebhookPayloadScheduledAppointmentReqDto scheduledEvent;
 
 	public String getEmail() {
 		return email;
@@ -31,11 +31,11 @@ public class WebhookPayloadReqDto {
 		this.name = name;
 	}
 
-	public WebhookPayloadScheduledEventReqDto getScheduledEvent() {
+	public WebhookPayloadScheduledAppointmentReqDto getScheduledEvent() {
 		return scheduledEvent;
 	}
 
-	public void setScheduledEvent(WebhookPayloadScheduledEventReqDto scheduledEvent) {
+	public void setScheduledEvent(WebhookPayloadScheduledAppointmentReqDto scheduledEvent) {
 		this.scheduledEvent = scheduledEvent;
 	}
 

@@ -1,4 +1,4 @@
-package com.valentin.reservacion_citas.web.dto;
+package com.valentin.reservacion_citas.web.dto.request;
 
 import java.util.List;
 

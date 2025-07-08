@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xlmns:th:"http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #fff; padding: 20px; display: flex; justify-content: center">
+<div style="background-color: rgba(188, 108, 37, 1); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(200, 125, 40, 10); max-width: 500px; min-width: 450px">
+    <div style="display: flex; justify-content: center">
+        <img src="cid:logoImagen" width="100px" height="100px" alt="logo">
+        <h1 style="font-size: 40px; color: #fff; margin-left: 10px">Cafe Klang</h1>
+    </div>
+    <div style="color: #FFF">
+        <h4>Haz recibido un nuevo mensaje desde tu sitio web: <i>Cafe Klang</i></h4>
+        <p><b>Nombre:</b> <span th:text="${nombre}">Usuario</span></p>
+        <p><b>Correo:</b> <span th:text="${correo}">Correo</span></p>
+        <p><b>Mensaje:</b></p>
+        <p th:text="${mensaje}">Mensage</p>
+    </div>
+</div>
+</body>
+</html>

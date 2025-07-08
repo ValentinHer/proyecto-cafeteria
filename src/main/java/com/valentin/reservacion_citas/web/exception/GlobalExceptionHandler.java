@@ -1,6 +1,6 @@
 package com.valentin.reservacion_citas.web.exception;
 
-import com.valentin.reservacion_citas.web.dto.MessageResDto;
+import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

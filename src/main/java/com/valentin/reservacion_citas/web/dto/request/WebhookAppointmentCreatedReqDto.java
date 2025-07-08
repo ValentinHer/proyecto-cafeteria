@@ -1,10 +1,10 @@
-package com.valentin.reservacion_citas.web.dto;
+package com.valentin.reservacion_citas.web.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WebhookEventCreatedReqDto {
+public class WebhookAppointmentCreatedReqDto {
 
 	@JsonProperty("payload")
 	WebhookPayloadReqDto payload;

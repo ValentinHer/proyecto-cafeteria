@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xlmns:th:"http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #fff; padding: 20px; display: flex; justify-content: center">
+    <div style="background-color: rgba(188, 108, 37, 1); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(200, 125, 40, 10); max-width: 500px; min-width: 450px">
+        <div style="display: flex; justify-content: center;" >
+            <img src="cid:logoImagen" width="100px" height="100px" alt="logo">
+            <h1 style="font-size: 40px; color: #fff; margin-left: 10px">Cafe Klang</h1>
+        </div>
+        <div style="color: #fff">
+            <hr style="background-color: #dda15e; height: 3px; border: 0;">
+            <h2>¡Reservación Confirmada!☕</h2>
+            <h3>Hola, <span th:text="${nombre}">Usuario</span>!</h3>
+            <p>¡Gracias por reservar con <i>Cafe Klang!.</i> Tu cita ha sido registrada con éxito.</p>
+            <p>Aquí tienes los detalles de tu reservación:</p>
+            <p style="margin-bottom: 0;">📅<b>Fecha:</b> <span th:text="${fecha}">Fecha cita</span></p>
+            <p style="margin-top: 2px;">⏰<b>Hora:</b> <span th:text="${hora}">Hora cita</span></p>
+            <p>Si necesitas hacer algún cambio o cancelar tu reservación, por favor contáctanos con al menos 1 hora de anticipación</p>
+            <p>¡Te esperamos con el mejor café y la mejor comida!😊</p>
+            <p>Atte. El equipo de <i>Cafe Klang</i></p>
+            <p style="color: #ccc; font-size: 0.8rem">Si quieres saber más acerca de nosotros o hacer una reservación, visita nuestra página web.</p>
+        </div>
+        <div style="display: flex; justify-content: center">
+            <a href="https://cafeklang.com"
+               style="color: white; background-color: #111; padding: 10px 15px; text-decoration: none; border-radius: 6px;">
+                Visitar página
+            </a>
+        </div>
+    </div>
+</body>
+</html>
