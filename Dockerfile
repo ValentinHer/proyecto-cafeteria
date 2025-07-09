@@ -19,4 +19,4 @@ EXPOSE 8080
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # Ejecutar la aplicación
-ENTRYPOINT ["java", "-Xmx2048m", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xmx512m", "-jar", "app.jar"]
