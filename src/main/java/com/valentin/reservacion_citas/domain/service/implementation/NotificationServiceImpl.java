@@ -30,6 +30,19 @@ public class NotificationServiceImpl implements NotificationService {
 		this.templateEngine = templateEngine;
 	}
 
+	private void sendConfirmationContactEmailToUser(EmailReqDto emailReqDto, Context context) {
+		context.setVariable("usuario", emailReqDto.getName());
+
+		String htmlContent = templateEngine.process("confirmationContactEmail", context);
+
+		try {
+			emailSender.sendEmail(htmlContent, emailReqDto.getEmail(), "Gracias por contactarnos – Hemos recibido tu mensaje");
+			logger.info("Correo de confirmación de contacto enviado de forma exitosa al email {} del usuario {}", emailReqDto.getEmail(), emailReqDto.getName());
+		} catch (MessagingException e) {
+			logger.error("No se pudo enviar el correo de confirmación de contacto al email {} del usuario {}", emailReqDto.getEmail(), emailReqDto.getName(), e);
+		}
+	}
+
 	@Override
 	public MessageResDto sendContactEmailToOwner(EmailReqDto emailReqDto) {
 		Context context = new Context();
@@ -42,6 +55,8 @@ public class NotificationServiceImpl implements NotificationService {
 		try {
 			emailSender.sendEmail(htmlContent, emailSendTo, "Mensaje desde el sitio web Cafe Klang");
 			logger.info("Correo enviado de forma exitosa al email {} para realizar contacto por parte del usuario {} con email {}", emailSendTo, emailReqDto.getName(), emailReqDto.getEmail());
+
+			sendConfirmationContactEmailToUser(emailReqDto, context);
 
 			return new MessageResDto("Correo enviado de forma exitosa", HttpStatus.OK.value());
 		} catch (MessagingException e) {

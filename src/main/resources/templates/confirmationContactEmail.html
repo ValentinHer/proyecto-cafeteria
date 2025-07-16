@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xlmns:th:"http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #fff; padding: 20px; display: flex; justify-content: center">
+<div style="background-color: rgba(188, 108, 37, 1); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(200, 125, 40, 10); max-width: 500px; min-width: 450px">
+    <div style="display: flex; justify-content: center">
+        <img src="cid:logoImagen" width="100px" height="100px" alt="logo">
+        <h1 style="font-size: 40px; color: #fff; margin-left: 10px">Cafe Klang</h1>
+    </div>
+    <div style="color: #FFF">
+        <h3>Hola <span th:text="${usuario}" >{nombre del usuario}</span></apn></h3>
+        <p>Gracias por ponerte en contacto con nosotros. Hemos recibido tu mensaje correctamente y nos pondremos en contacto contigo lo antes posible.</p>
+        <p><b>Resumen de tu mensaje:</b></p>
+        <ul>
+            <li>
+                <p><b>Nombre:</b> <span th:text="${nombre}">Usuario</span></p>
+            </li>
+            <li>
+                <p><b>Correo:</b> <span th:text="${correo}">Correo</span></p>
+            </li>
+            <li>
+                <p><b>Mensaje:</b></p>
+                <p th:text="${mensaje}">Mensaje</p>
+            </li>
+        </ul>
+       <p>Nuestro equipo revisará tu solicitud y te responderá dentro de las próximas 24-48 horas.</p>
+       <p>Gracias por confiar en nosotros.<p>
+        <p>Saludos cordiales,</p>
+        <p><b>Equipo de <i>Cafe Klang</i></b></p>
+
+    </div>
+    <div style="display: flex; justify-content: center">
+        <a href="https://cafeklang.com"
+           style="color: white; background-color: #111; padding: 10px 15px; text-decoration: none; border-radius: 6px;">
+            Visitar página
+        </a>
+    </div>
+</div>
+</body>
+</html>
