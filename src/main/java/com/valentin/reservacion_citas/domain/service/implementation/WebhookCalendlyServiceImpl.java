@@ -203,4 +203,15 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 
 		return messageResDto;
 	}
+
+	private void getCurrentUser() {
+		String payload = restClient.get()
+				.uri(calendlyApiUrl + "users/me")
+								   .header("Authorization", "Bearer " + calendlyToken)
+								   .header("Content-Type", "application/json")
+				.retrieve()
+				.body(String.class);
+
+		logger.info("Body al obtener el usuario actual: {}", payload);
+	}
 }

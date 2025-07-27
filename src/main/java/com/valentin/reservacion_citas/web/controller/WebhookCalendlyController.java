@@ -29,6 +29,7 @@ public class WebhookCalendlyController {
 
 	@PostMapping("/invitee_created")
 	public ResponseEntity<MessageResDto> createAppointment(@RequestBody WebhookAppointmentCreatedReqDto payload) {
+		System.out.println(payload);
 		return new ResponseEntity<>(calendlyService.handleAppointmentCreated(payload), HttpStatus.OK);
 	}
 }

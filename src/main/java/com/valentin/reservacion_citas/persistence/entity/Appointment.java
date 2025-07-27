@@ -1,10 +1,13 @@
 package com.valentin.reservacion_citas.persistence.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "citas")
 public class Appointment {
 
@@ -27,8 +30,16 @@ public class Appointment {
 	private LocalDateTime createdAt;
 
 	@ManyToOne
-	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+	@JoinColumn(name = "id_invitado", referencedColumnName = "id_invitado", nullable = true, insertable = false, updatable = false)
+	private Guest guest;
+
+	@ManyToOne
+	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = true, insertable = false, updatable = false)
 	private User user;
+
+	@LastModifiedDate
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP", nullable = false)
+	private LocalDateTime updatedAt;
 
 	public String getId() {
 		return id;
@@ -70,11 +81,27 @@ public class Appointment {
 		this.createdAt = createdAt;
 	}
 
+	public Guest getGuest() {
+		return guest;
+	}
+
+	public void setGuest(Guest guest) {
+		this.guest = guest;
+	}
+
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

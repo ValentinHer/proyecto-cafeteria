@@ -1,7 +1,7 @@
 package com.valentin.reservacion_citas.domain.mapper;
 
 import com.valentin.reservacion_citas.persistence.entity.Appointment;
-import com.valentin.reservacion_citas.persistence.entity.User;
+import com.valentin.reservacion_citas.persistence.entity.Guest;
 import com.valentin.reservacion_citas.web.dto.request.UserReqDto;
 import org.springframework.stereotype.Component;
 
@@ -13,17 +13,17 @@ public class UserMapper {
 		this.appointmentMapper = appointmentMapper;
 	}
 
-	public User toEntity(UserReqDto userReqDto) {
-		User user = new User();
-		user.setName(userReqDto.getName());
-		user.setEmail(userReqDto.getEmail());
-		user.setAppointments(userReqDto.getAppointments().stream().map(appointmentReqDto -> {
+	public Guest toEntity(UserReqDto userReqDto) {
+		Guest guest = new Guest();
+		guest.setName(userReqDto.getName());
+		guest.setEmail(userReqDto.getEmail());
+		guest.setAppointments(userReqDto.getAppointments().stream().map(appointmentReqDto -> {
 			Appointment appointment = appointmentMapper.toEntity(appointmentReqDto);
-			appointment.setUser(user);
+			appointment.setGuest(guest);
 
 			return appointment;
 		}).toList());
 
-		return user;
+		return guest;
 	}
 }

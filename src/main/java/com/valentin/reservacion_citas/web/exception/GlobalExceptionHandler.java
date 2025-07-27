@@ -33,4 +33,10 @@ public class GlobalExceptionHandler {
 		MessageResDto response = new MessageResDto(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<MessageResDto> handleNotFoundException(NotFoundException exception) {
+		MessageResDto response = new MessageResDto(exception.getMessage(), HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
 }
