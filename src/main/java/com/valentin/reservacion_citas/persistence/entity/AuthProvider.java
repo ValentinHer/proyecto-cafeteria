@@ -17,7 +17,7 @@ public class AuthProvider {
 	@Column(name = "id_proveedor")
 	private String id;
 
-	@Column(name = "id_user")
+	@Column(name = "id_usuario")
 	private String userId;
 
 	@Enumerated(EnumType.STRING)

@@ -8,7 +8,7 @@ import com.valentin.reservacion_citas.persistence.entity.Guest;
 import com.valentin.reservacion_citas.persistence.repository.AppointmentRepository;
 import com.valentin.reservacion_citas.persistence.repository.GuestRepository;
 import com.valentin.reservacion_citas.web.dto.request.AppointmentReqDto;
-import com.valentin.reservacion_citas.web.dto.request.UserReqDto;
+import com.valentin.reservacion_citas.web.dto.request.GuestReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -35,18 +35,18 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Override
 	@Transactional
-	public MessageResDto createAppointment(UserReqDto userReqDto) {
-		Optional<Guest> userFound = guestRepository.findByEmail(userReqDto.getEmail());
+	public MessageResDto createAppointment(GuestReqDto guestReqDto) {
+		Optional<Guest> userFound = guestRepository.findByEmail(guestReqDto.getEmail());
 
 		if(userFound.isEmpty()){
-			Guest guest = userMapper.toEntity(userReqDto);
+			Guest guest = userMapper.toEntity(guestReqDto);
 			Guest guestSaved = guestRepository.save(guest);
 
 			logger.info("Cita creada y usuario creado {} con email {} de forma exitosa", guestSaved.getName(), guestSaved.getEmail());
 			return new MessageResDto("Cita creada de forma exitosa", HttpStatus.CREATED.value());
 		}
 
-		return createAppointmentWithExistUser(userReqDto.getAppointments().getFirst(), userFound.get());
+		return createAppointmentWithExistUser(guestReqDto.getAppointments().getFirst(), userFound.get());
 	}
 
 	public MessageResDto createAppointmentWithExistUser(AppointmentReqDto appointmentReqDto, Guest guest) {

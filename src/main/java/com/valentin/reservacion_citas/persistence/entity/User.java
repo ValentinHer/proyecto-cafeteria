@@ -6,7 +6,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +18,7 @@ public class User {
 	@Column(name = "id_usuario")
 	private String id;
 
-	@Column(name = "id_rol")
+	@Column(name = "id_rol", nullable = false)
 	private String roleId;
 
 	@Column(name = "nombre", columnDefinition = "VARCHAR(50)", nullable = false)
@@ -38,11 +37,11 @@ public class User {
 	@JoinColumn(name = "id_rol", referencedColumnName = "id_rol", insertable = false, updatable = false)
 	private Role role;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<AuthProvider> authProviders;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Appointment> appointments = new ArrayList<>();
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Appointment> appointments;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<PaymentMethod> paymentMethods;

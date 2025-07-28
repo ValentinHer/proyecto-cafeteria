@@ -7,7 +7,7 @@ import com.valentin.reservacion_citas.domain.service.NotificationService;
 import com.valentin.reservacion_citas.domain.service.WebhookCalendlyService;
 import com.valentin.reservacion_citas.persistence.entity.AppointmentStatus;
 import com.valentin.reservacion_citas.web.dto.request.AppointmentReqDto;
-import com.valentin.reservacion_citas.web.dto.request.UserReqDto;
+import com.valentin.reservacion_citas.web.dto.request.GuestReqDto;
 import com.valentin.reservacion_citas.web.dto.request.WebhookAppointmentCreatedReqDto;
 import com.valentin.reservacion_citas.web.dto.request.WebhookCalendlySubscriptionReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
@@ -181,12 +181,12 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 		appointmentReqDto.setStatus(AppointmentStatus.valueOf(payload.getPayload().getScheduledEvent().getStatus().toUpperCase()));
 		appointmentReqDto.setCreatedAt(payload.getPayload().getScheduledEvent().getCreatedAt());
 
-		UserReqDto userReqDto = new UserReqDto();
-		userReqDto.setName(payload.getPayload().getName());
-		userReqDto.setEmail(payload.getPayload().getEmail());
-		userReqDto.setAppointments(List.of(appointmentReqDto));
+		GuestReqDto guestReqDto = new GuestReqDto();
+		guestReqDto.setName(payload.getPayload().getName());
+		guestReqDto.setEmail(payload.getPayload().getEmail());
+		guestReqDto.setAppointments(List.of(appointmentReqDto));
 
-		MessageResDto messageResDto = appointmentService.createAppointment(userReqDto);
+		MessageResDto messageResDto = appointmentService.createAppointment(guestReqDto);
 
 		String[] listDateAndTime = payload.getPayload()
 										  .getScheduledEvent()
