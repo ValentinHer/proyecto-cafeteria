@@ -4,7 +4,6 @@ import com.valentin.reservacion_citas.persistence.entity.AuthProvider;
 import com.valentin.reservacion_citas.persistence.entity.AuthProviders;
 import com.valentin.reservacion_citas.persistence.entity.Role;
 import com.valentin.reservacion_citas.persistence.entity.User;
-import com.valentin.reservacion_citas.persistence.repository.AuthProviderRepository;
 import com.valentin.reservacion_citas.persistence.repository.RoleRepository;
 import com.valentin.reservacion_citas.persistence.repository.UserRepository;
 import com.valentin.reservacion_citas.web.exception.NotFoundException;

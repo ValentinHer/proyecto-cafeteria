@@ -3,7 +3,6 @@ package com.valentin.reservacion_citas.domain.service.implementation;
 import com.valentin.reservacion_citas.domain.service.AuthService;
 import com.valentin.reservacion_citas.web.dto.request.UserLoginReqDto;
 import com.valentin.reservacion_citas.web.exception.InvalidCredentialException;
-import com.valentin.reservacion_citas.web.exception.NotFoundException;
 import com.valentin.reservacion_citas.web.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
 			List<AuthProvider> authProviders = user.getAuthProviders();
 
 			if (authProviders.stream().anyMatch(authProvider -> authProvider.getName().equals(AuthProviders.GOOGLE))) {
-				throw new ConflictException("Cuenta existente con este correo, Inicie sesión con google y habilite el método de ingreso Email/Password");
+				throw new ConflictException("Cuenta existente con este correo. Inicie sesión con google y habilite el método de ingreso por Email/Contraseña");
 			} else if (authProviders.stream().anyMatch(authProvider -> authProvider.getName().equals(AuthProviders.EMAIL))) {
-				throw new ConflictException("Cuenta existente con este correo, Inicie sesión o reestablezca su contraseña");
+				throw new ConflictException("Cuenta existente con este correo. Inicie sesión con su Email/Contraseña o reestablezca su contraseña");
 			}
 		}
 
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 			List<AuthProvider> authProviders = user.getAuthProviders();
 
 			if (authProviders.stream().anyMatch(authProvider -> authProvider.getName().equals(AuthProviders.EMAIL))) {
-				throw new ConflictException("Cuenta existente con este correo, Inicie sesión Email/Password y habilite el método de ingreso con Google");
+				throw new ConflictException("Cuenta existente con este correo. Inicie sesión con Email/Contraseña y habilite el método de ingreso por Google");
 			}
 
 			return;
