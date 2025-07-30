@@ -25,10 +25,9 @@ public class UserController {
 	public ResponseEntity<MessageResDto> create(@RequestBody UserReqDto userReqDto) {
 		AuthProviderReqDto authProviderReqDto = new AuthProviderReqDto();
 		authProviderReqDto.setName(AuthProviders.EMAIL);
-		authProviderReqDto.setEmail(userReqDto.getEmail());
 
 		MessageResDto response = userService.createUserWithEmailPassword(userReqDto, authProviderReqDto);
 
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+		return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
 	}
 }

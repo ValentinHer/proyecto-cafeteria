@@ -5,8 +5,7 @@ import com.valentin.reservacion_citas.persistence.entity.AuthProviders;
 public class AuthProviderReqDto {
 	private AuthProviders name;
 	private String userId;
-	private String providerId;
-	private String email;
+	private String providerUserId;
 	private String password;
 	private String resetToken;
 
@@ -26,20 +25,12 @@ public class AuthProviderReqDto {
 		this.userId = userId;
 	}
 
-	public String getProviderId() {
-		return providerId;
+	public String getProviderUserId() {
+		return providerUserId;
 	}
 
-	public void setProviderId(String providerId) {
-		this.providerId = providerId;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setProviderUserId(String providerUserId) {
+		this.providerUserId = providerUserId;
 	}
 
 	public String getPassword() {

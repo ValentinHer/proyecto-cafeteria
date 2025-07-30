@@ -27,7 +27,7 @@ public class AuthProviderServiceImpl implements AuthProviderService {
 		authProvider.setUserId(userId);
 
 		AuthProvider authProviderSaved = authProviderRepository.save(authProvider);
-		logger.info("AuthProvider creado del usuario: id={}, email={}", authProviderSaved.getUserId(), authProviderSaved.getEmail());
+		logger.info("AuthProvider creado del usuario: id={}", authProviderSaved.getUserId());
 
 		return authProviderSaved;
 	}

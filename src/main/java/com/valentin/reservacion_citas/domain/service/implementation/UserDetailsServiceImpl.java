@@ -1,14 +1,20 @@
 package com.valentin.reservacion_citas.domain.service.implementation;
 
+import com.valentin.reservacion_citas.persistence.entity.AuthProvider;
+import com.valentin.reservacion_citas.persistence.entity.AuthProviders;
 import com.valentin.reservacion_citas.persistence.entity.Role;
 import com.valentin.reservacion_citas.persistence.entity.User;
+import com.valentin.reservacion_citas.persistence.repository.AuthProviderRepository;
 import com.valentin.reservacion_citas.persistence.repository.RoleRepository;
 import com.valentin.reservacion_citas.persistence.repository.UserRepository;
 import com.valentin.reservacion_citas.web.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -20,10 +26,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		this.roleRepository = roleRepository;
 	}
 
+	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User userFound = userRepository.findByEmail(username)
 									   .orElseThrow(() -> new NotFoundException("Usuario No Encontrado"));
+
+		Optional<AuthProvider> authProvider = userFound.getAuthProviders().stream().filter(provider -> provider.getName().equals(AuthProviders.EMAIL)).findFirst();
 
 		Role userRoles = roleRepository.findById(userFound.getRoleId())
 									   .orElseThrow(() -> new NotFoundException("Rol No Encontrado"));
@@ -32,6 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		return org.springframework.security.core.userdetails.User.builder()
 																 .username(userFound.getEmail())
+																 .password(authProvider.get().getPassword())
 																 .roles(roles)
 																 .disabled(userFound.getDisabled())
 																 .accountLocked(userFound.getBlocked())

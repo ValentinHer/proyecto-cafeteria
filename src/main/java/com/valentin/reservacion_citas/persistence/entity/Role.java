@@ -17,7 +17,8 @@ public class Role {
 	@Column(name = "id_rol")
 	private String id;
 
-	@Column(name = "nombre", columnDefinition = "VARCHAR(50)", unique = true, nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Column(name = "nombre", columnDefinition = "VARCHAR(20)", unique = true, nullable = false)
 	private Roles name;
 
 	@Column(name = "descripcion", columnDefinition = "VARCHAR(150)", nullable = true)

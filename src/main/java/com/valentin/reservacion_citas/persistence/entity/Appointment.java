@@ -38,7 +38,7 @@ public class Appointment {
 	private User user;
 
 	@LastModifiedDate
-	@Column(name = "created_at", columnDefinition = "TIMESTAMP", nullable = false)
+	@Column(name = "updated_at", columnDefinition = "TIMESTAMP", nullable = false)
 	private LocalDateTime updatedAt;
 
 	public String getId() {

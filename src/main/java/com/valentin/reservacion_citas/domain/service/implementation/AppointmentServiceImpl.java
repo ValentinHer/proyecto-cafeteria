@@ -36,7 +36,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	@Transactional
 	public MessageResDto createAppointment(GuestReqDto guestReqDto) {
-		Optional<Guest> userFound = guestRepository.findByEmail(guestReqDto.getEmail());
+		/*Optional<Guest> userFound = guestRepository.findByEmail(guestReqDto.getEmail());
 
 		if(userFound.isEmpty()){
 			Guest guest = userMapper.toEntity(guestReqDto);
@@ -46,7 +46,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 			return new MessageResDto("Cita creada de forma exitosa", HttpStatus.CREATED.value());
 		}
 
-		return createAppointmentWithExistUser(guestReqDto.getAppointments().getFirst(), userFound.get());
+		return createAppointmentWithExistUser(guestReqDto.getAppointments().getFirst(), userFound.get());*/
+		return  null;
 	}
 
 	public MessageResDto createAppointmentWithExistUser(AppointmentReqDto appointmentReqDto, Guest guest) {

@@ -10,8 +10,7 @@ public class AuthProviderMapper {
 		AuthProvider authProvider = new AuthProvider();
 		authProvider.setName(authProviderReqDto.getName());
 		authProvider.setUserId(authProviderReqDto.getUserId());
-		authProvider.setProviderId(authProviderReqDto.getProviderId());
-		authProvider.setEmail(authProviderReqDto.getEmail());
+		authProvider.setProviderUserId(authProviderReqDto.getProviderUserId());
 		authProvider.setPassword(authProviderReqDto.getPassword());
 		authProvider.setResetToken(authProviderReqDto.getResetToken());
 

@@ -24,7 +24,7 @@ public class User {
 	@Column(name = "nombre", columnDefinition = "VARCHAR(50)", nullable = false)
 	private String name;
 
-	@Column(name = "correo_electronico", columnDefinition = "VARCHAR(100)", nullable = false)
+	@Column(name = "correo_electronico", columnDefinition = "VARCHAR(100)", unique = true, nullable = false)
 	private String email;
 
 	@Column(name = "desactivado", nullable = false)

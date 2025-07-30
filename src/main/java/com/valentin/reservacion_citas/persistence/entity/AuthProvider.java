@@ -24,11 +24,8 @@ public class AuthProvider {
 	@Column(name = "nombre")
 	private AuthProviders name;
 
-	@Column(name = "proveedor_id", nullable = true)
-	private String providerId;
-
-	@Column(name = "correo_electronico", columnDefinition = "VARCHAR(100)", nullable = false)
-	private String email;
+	@Column(name = "proveedor_usuario_id", nullable = true)
+	private String providerUserId;
 
 	@Column(columnDefinition = "TEXT", nullable = true)
 	private String password;
@@ -75,20 +72,12 @@ public class AuthProvider {
 		this.name = name;
 	}
 
-	public String getProviderId() {
-		return providerId;
+	public String getProviderUserId() {
+		return providerUserId;
 	}
 
-	public void setProviderId(String providerId) {
-		this.providerId = providerId;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setProviderUserId(String providerUserId) {
+		this.providerUserId = providerUserId;
 	}
 
 	public String getPassword() {

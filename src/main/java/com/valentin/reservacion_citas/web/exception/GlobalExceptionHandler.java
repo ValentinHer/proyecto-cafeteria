@@ -39,4 +39,16 @@ public class GlobalExceptionHandler {
 		MessageResDto response = new MessageResDto(exception.getMessage(), HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+
+	@ExceptionHandler(ConflictException.class)
+	public ResponseEntity<MessageResDto> handleConflictException(ConflictException exception) {
+		MessageResDto response = new MessageResDto(exception.getMessage(), HttpStatus.CONFLICT.value());
+		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(InvalidCredentialException.class)
+	public ResponseEntity<MessageResDto> handleInvalidCredentialException(InvalidCredentialException exception) {
+		MessageResDto response = new MessageResDto(exception.getMessage(), HttpStatus.UNAUTHORIZED.value());
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
 }

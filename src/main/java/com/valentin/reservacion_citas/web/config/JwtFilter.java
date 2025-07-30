@@ -33,6 +33,11 @@ public class JwtFilter extends OncePerRequestFilter {
 		// Validar que haya una cookie válida
 		Cookie[] cookies = request.getCookies();
 
+		if(cookies == null || cookies.length < 1){
+			filterChain.doFilter(request, response);
+			return;
+		}
+
 		Optional<Cookie> cookieFiltered = Arrays.stream(cookies)
 												.filter(cookie -> cookie.getName()
 																		.equals("token"))
@@ -40,6 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		if (cookieFiltered.isEmpty()) {
 			filterChain.doFilter(request, response);
+			return;
 		}
 
 		Cookie cookie = cookieFiltered.get();
@@ -49,6 +55,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		// Validar que el token sea válido
 		if (!jwtUtil.validJwt(jwt)) {
 			filterChain.doFilter(request, response);
+			return;
 		}
 
 		// Cargar el usuario del UserDetailsService

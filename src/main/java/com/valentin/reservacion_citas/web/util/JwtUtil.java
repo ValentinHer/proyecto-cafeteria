@@ -12,13 +12,12 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtUtil {
 
-	@Value("${jwt.issuer}")
 	private final String jwtIssuer;
 	private final Algorithm algorithm;
 
-	public JwtUtil(String jwtIssuer, @Value("${jwt.secret}") String jwtSecret) {
+	public JwtUtil(@Value("${jwt.issuer}") String jwtIssuer, @Value("${jwt.secret}") String jwtSecret) {
 		this.jwtIssuer = jwtIssuer;
-		algorithm = Algorithm.HMAC256(jwtSecret);
+		this.algorithm = Algorithm.HMAC256(jwtSecret);
 	}
 
 	public String createJwt(String email) {

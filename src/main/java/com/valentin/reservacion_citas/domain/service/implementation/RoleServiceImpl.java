@@ -21,21 +21,29 @@ public class RoleServiceImpl implements RoleService {
 
 	@PostConstruct
 	public void createDefaultRole() {
-		Role roleAdmin = new Role();
-		roleAdmin.setName(Roles.ADMIN);
+		if(roleRepository.existsByName(Roles.ADMIN)){
+			logger.info("Admin rol ya existente");
+		} else {
+			Role roleAdmin = new Role();
+			roleAdmin.setName(Roles.ADMIN);
 
-		Role roleAdminSaved = roleRepository.save(roleAdmin);
-		logger.info("Admin rol creado exitosamente");
+			Role roleAdminSaved = roleRepository.save(roleAdmin);
+			logger.info("Admin rol creado exitosamente");
+		}
 
-		Role roleUser = new Role();
-		roleUser.setName(Roles.USER);
+		if(roleRepository.existsByName(Roles.USER)) {
+			logger.info("User rol ya existente");
+		} else {
+			Role roleUser = new Role();
+			roleUser.setName(Roles.USER);
 
-		Role roleUserSaved = roleRepository.save(roleUser);
-		logger.info("User rol creado exitosamente");
+			Role roleUserSaved = roleRepository.save(roleUser);
+			logger.info("User rol creado exitosamente");
+		}
 	}
 
 	@Override
 	public Role findByName(String name) {
-		return roleRepository.findByName(name).orElseThrow(() -> new NotFoundException("Rol no Encontrado"));
+		return roleRepository.findByName(Roles.valueOf(name.toUpperCase())).orElseThrow(() -> new NotFoundException("Rol no Encontrado"));
 	}
 }

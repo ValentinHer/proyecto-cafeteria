@@ -10,5 +10,5 @@ public interface UserService {
 
 	MessageResDto createUserWithEmailPassword(UserReqDto userReqDto, AuthProviderReqDto authProviderReqDto);
 
-	MessageResDto createUserWithGoogle(UserReqDto userReqDto, AuthProviderReqDto authProviderReqDto);
+	void createUserWithGoogle(UserReqDto userReqDto, AuthProviderReqDto authProviderReqDto);
 }
