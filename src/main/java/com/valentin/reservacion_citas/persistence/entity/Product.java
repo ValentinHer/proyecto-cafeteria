@@ -35,7 +35,7 @@ public class Product {
 	@Column(name = "activo", nullable = false)
 	private Boolean isActive = true;
 
-	@ManyToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria", insertable = false, updatable = false)
 	private Category category;
 
@@ -95,11 +95,11 @@ public class Product {
 		this.description = description;
 	}
 
-	public Boolean getActive() {
+	public Boolean getIsActive() {
 		return isActive;
 	}
 
-	public void setActive(Boolean active) {
+	public void setIsActive(Boolean active) {
 		isActive = active;
 	}
 

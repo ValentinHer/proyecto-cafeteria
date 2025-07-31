@@ -1,0 +1,77 @@
+package com.valentin.reservacion_citas.web.dto.request;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public class ProductReqDto {
+
+	@NotNull(message = "La categoría es requerida")
+	private String categoryId;
+
+	@NotNull(message = "El nombre es requerido")
+	@Size(min = 2, max = 100)
+	private String name;
+
+	@NotNull(message = "El stock es requerido")
+	@Min(1)
+	private Integer stock;
+
+	@NotNull(message = "El precio es requerido")
+	private Double price;
+
+	private String description;
+
+	private Boolean isActive = true;
+
+	public @NotNull(message = "La categoría es requerida") String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(@NotNull(message = "La categoría es requerida") String categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public @NotNull(message = "El nombre es requerido") @Size(min = 2, max = 100) String getName() {
+		return name;
+	}
+
+	public void setName(@NotNull(message = "El nombre es requerido") @Size(min = 2, max = 100) String name) {
+		this.name = name;
+	}
+
+	@NotNull(message = "El stock es requerido")
+	@Min(1)
+	public Integer getStock() {
+		return stock;
+	}
+
+	public void setStock(@NotNull(message = "El stock es requerido") @Min(1) Integer stock) {
+		this.stock = stock;
+	}
+
+	@NotNull(message = "El precio es requerido")
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(@NotNull(message = "El precio es requerido") Double price) {
+		this.price = price;
+	}
+
+	public @NotNull(message = "La descripción es requerido") String getDescription() {
+		return description;
+	}
+
+	public void setDescription(@NotNull(message = "La descripción es requerido") String description) {
+		this.description = description;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean active) {
+		isActive = active;
+	}
+}
