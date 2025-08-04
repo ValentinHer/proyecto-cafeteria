@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,8 +23,8 @@ public class Payment {
 	@Column(name = "id_usuario")
 	private String userId;
 
-	@Column(name = "cantidad_total", nullable = false)
-	private Double TotalAmount;
+	@Column(name = "pago_total", nullable = false)
+	private BigDecimal TotalAmount;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "divisa", nullable = false)
@@ -72,11 +73,11 @@ public class Payment {
 		this.userId = userId;
 	}
 
-	public Double getTotalAmount() {
+	public BigDecimal getTotalAmount() {
 		return TotalAmount;
 	}
 
-	public void setTotalAmount(Double totalAmount) {
+	public void setTotalAmount(BigDecimal totalAmount) {
 		TotalAmount = totalAmount;
 	}
 

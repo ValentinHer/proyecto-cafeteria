@@ -1,8 +1,8 @@
 package com.valentin.reservacion_citas.web.dto.request;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
 
 public class ProductReqDto {
 
@@ -18,7 +18,9 @@ public class ProductReqDto {
 	private Integer stock;
 
 	@NotNull(message = "El precio es requerido")
-	private Double price;
+	@DecimalMin(value = "1.00", message = "El precio mínimo es de 1.00")
+	@Digits(integer = 10, fraction = 2, message = "El precio debe tener hasta dos decimales")
+	private BigDecimal price;
 
 	private String description;
 
@@ -50,12 +52,11 @@ public class ProductReqDto {
 		this.stock = stock;
 	}
 
-	@NotNull(message = "El precio es requerido")
-	public Double getPrice() {
+	public @NotNull(message = "El precio es requerido") BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(@NotNull(message = "El precio es requerido") Double price) {
+	public void setPrice(@NotNull(message = "El precio es requerido") BigDecimal price) {
 		this.price = price;
 	}
 

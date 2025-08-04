@@ -5,6 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,7 +28,7 @@ public class Product {
 	private Integer stock;
 
 	@Column(name = "precio", nullable = false)
-	private Double price;
+	private BigDecimal price;
 
 	@Column(name = "descripcion", columnDefinition = "VARCHAR(100)", nullable = true)
 	private String description;
@@ -79,11 +80,11 @@ public class Product {
 		this.stock = stock;
 	}
 
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

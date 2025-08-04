@@ -3,6 +3,7 @@ package com.valentin.reservacion_citas.persistence.entity;
 import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,10 +23,10 @@ public class OrderItem {
 	private Integer quantity;
 
 	@Column(name = "precio_unitario", nullable = false)
-	private Double unitaryPrice;
+	private BigDecimal unitaryPrice;
 
-	@Column(name = "cantidad_total", nullable = false)
-	private Double totalAmount;
+	@Column(name = "pago_total", nullable = false)
+	private BigDecimal totalAmount;
 
 	@ManyToOne
 	@JoinColumn(name = "id_producto", referencedColumnName = "id_producto", insertable = false, updatable = false)
@@ -65,19 +66,19 @@ public class OrderItem {
 		this.quantity = quantity;
 	}
 
-	public Double getUnitaryPrice() {
+	public BigDecimal getUnitaryPrice() {
 		return unitaryPrice;
 	}
 
-	public void setUnitaryPrice(Double unitaryPrice) {
+	public void setUnitaryPrice(BigDecimal unitaryPrice) {
 		this.unitaryPrice = unitaryPrice;
 	}
 
-	public Double getTotalAmount() {
+	public BigDecimal getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(Double totalAmount) {
+	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
