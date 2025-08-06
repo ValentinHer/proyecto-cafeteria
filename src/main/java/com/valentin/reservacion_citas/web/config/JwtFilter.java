@@ -32,7 +32,13 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-		System.out.println("JwtFilter ejecutando para " + request.getRequestURI());
+		String path = request.getRequestURI();
+
+		// Ignorar rutas públicas
+		if(path.startsWith("/auth") || path.startsWith("/users") || path.startsWith("/emails") || path.startsWith("/webhooks/calendars")) {
+			filterChain.doFilter(request,response);
+			return;
+		}
 
 		// Validar que haya una cookie válida
 		Cookie[] cookies = request.getCookies();
