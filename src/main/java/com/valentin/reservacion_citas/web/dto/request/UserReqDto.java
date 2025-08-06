@@ -1,11 +1,9 @@
 package com.valentin.reservacion_citas.web.dto.request;
 
-import java.util.List;
-
 public class UserReqDto {
 	private String name;
 	private String email;
-	private List<AppointmentReqDto> appointments;
+	private String password;
 
 	public String getName() {
 		return name;
@@ -23,20 +21,11 @@ public class UserReqDto {
 		this.email = email;
 	}
 
-	public List<AppointmentReqDto> getAppointments() {
-		return appointments;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setAppointments(List<AppointmentReqDto> appointments) {
-		this.appointments = appointments;
-	}
-
-	@Override
-	public String toString() {
-		return "UserReqDto{" +
-				"name='" + name + '\'' +
-				", email='" + email + '\'' +
-				", appointments=" + appointments +
-				'}';
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
