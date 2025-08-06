@@ -13,6 +13,8 @@ public class OrderItemResDto {
 
 	private BigDecimal totalAmount;
 
+	private ProductResDto productResDto;
+
 	public String getId() {
 		return id;
 	}
@@ -51,5 +53,13 @@ public class OrderItemResDto {
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+
+	public ProductResDto getProductResDto() {
+		return productResDto;
+	}
+
+	public void setProductResDto(ProductResDto productResDto) {
+		this.productResDto = productResDto;
 	}
 }

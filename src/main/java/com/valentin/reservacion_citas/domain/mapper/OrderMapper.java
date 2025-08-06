@@ -41,7 +41,7 @@ public class OrderMapper {
 		response.setCreatedAt(order.getCreatedAt());
 
 		if(withOrderItems) {
-			response.setItems(order.getProducts().stream().map(orderItemMapper::toResponse).toList());
+			response.setItems(order.getProducts().stream().map(product -> orderItemMapper.toResponse(product, false)).toList());
 		}
 
 		return response;

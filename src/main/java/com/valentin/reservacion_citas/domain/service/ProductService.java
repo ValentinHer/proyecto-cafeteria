@@ -9,6 +9,8 @@ import java.util.List;
 public interface ProductService {
 	MessageResDto create(ProductReqDto productReqDto);
 
+	ProductResDto getOneById(String id, Boolean withCategory);
+
 	List<ProductResDto> getAllActive();
 
 	MessageResDto updateById(ProductReqDto productReqDto, String id);

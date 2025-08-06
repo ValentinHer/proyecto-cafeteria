@@ -8,6 +8,7 @@ import com.valentin.reservacion_citas.web.dto.request.ProductReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.dto.response.ProductResDto;
 import com.valentin.reservacion_citas.web.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,14 @@ public class ProductServiceImpl implements ProductService {
 		productRepository.save(product);
 
 		return new MessageResDto("Producto guardado exitosamente", HttpStatus.OK.value());
+	}
+
+	@Override
+	@Transactional
+	public ProductResDto getOneById(String id, Boolean withCategory) {
+		Product productFound = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Producto no encontrado"));
+
+		return productMapper.toResponse(productFound, withCategory);
 	}
 
 	@Override

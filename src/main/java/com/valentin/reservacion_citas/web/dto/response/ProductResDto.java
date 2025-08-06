@@ -1,5 +1,6 @@
 package com.valentin.reservacion_citas.web.dto.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ProductResDto {
@@ -9,7 +10,7 @@ public class ProductResDto {
 
 	private int stock;
 
-	private double price;
+	private BigDecimal price;
 
 	private String description;
 
@@ -41,11 +42,11 @@ public class ProductResDto {
 		this.stock = stock;
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -36,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Role userRoles = roleRepository.findById(userFound.getRoleId())
 									   .orElseThrow(() -> new NotFoundException("Rol No Encontrado"));
 
-		String[] roles = {String.valueOf(userRoles.getName())};
+		String[] roles = {userRoles.getName().toString()};
 
 		return org.springframework.security.core.userdetails.User.builder()
 																 .username(userFound.getEmail())

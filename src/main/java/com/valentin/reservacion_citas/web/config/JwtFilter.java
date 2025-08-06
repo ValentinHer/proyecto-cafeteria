@@ -8,8 +8,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,6 +31,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+		System.out.println("JwtFilter ejecutando para " + request.getRequestURI());
 
 		// Validar que haya una cookie válida
 		Cookie[] cookies = request.getCookies();
@@ -64,7 +68,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		// Cargar al usuario en el contexto de seguridad
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-				user.getUsername(), null,user.getAuthorities()
+				user, null,user.getAuthorities()
 		);
 
 		SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

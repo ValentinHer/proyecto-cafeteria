@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderItemMapper {
+	private final ProductMapper productMapper;
+
+	public OrderItemMapper(ProductMapper productMapper) {
+		this.productMapper = productMapper;
+	}
+
 	public OrderItem toEntity(OrderItemReqDto orderItemReqDto) {
 		OrderItem orderItem = new OrderItem();
 		orderItem.setProductId(orderItemReqDto.getProductId());
@@ -17,13 +23,17 @@ public class OrderItemMapper {
 		return  orderItem;
 	}
 
-	public OrderItemResDto toResponse(OrderItem orderItem) {
+	public OrderItemResDto toResponse(OrderItem orderItem, Boolean withProductDetails) {
 		OrderItemResDto response = new OrderItemResDto();
 		response.setId(orderItem.getId());
 		response.setProductId(orderItem.getProductId());
 		response.setQuantity(orderItem.getQuantity());
 		response.setUnitaryPrice(orderItem.getUnitaryPrice());
 		response.setTotalAmount(orderItem.getTotalAmount());
+
+		if (withProductDetails) {
+			response.setProductResDto(productMapper.toResponse(orderItem.getProduct(), false));
+		}
 
 		return response;
 	}

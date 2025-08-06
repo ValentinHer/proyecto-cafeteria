@@ -29,6 +29,9 @@ public class Order {
 	@Column(name = "pago_total", nullable = false)
 	private BigDecimal totalAmount;
 
+	@Column(name = "proveedor_orden_id", nullable = true)
+	private String providerOrderId;
+
 	@ManyToOne
 	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false, updatable = false)
 	private User user;
