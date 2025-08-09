@@ -33,7 +33,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 		cookie.setPath("/");
 		cookie.setMaxAge(3600);*/
 
-		String cookieString = String.format("token=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=None", jwtToken, 3600);
+		String cookieString = String.format("token=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=Lax", jwtToken, 3600);
 		response.addHeader("Set-Cookie", cookieString);
 
 		response.sendRedirect("http://localhost:5173/home");
