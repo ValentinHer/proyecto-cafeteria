@@ -22,13 +22,14 @@ public class AuthController {
 	public ResponseEntity<MessageResDto> login(@RequestBody UserLoginReqDto userLoginReqDto, HttpServletResponse response) {
 		String token = authService.login(userLoginReqDto);
 
-		Cookie cookie = new Cookie("token", token);
+		/*Cookie cookie = new Cookie("token", token);
 		cookie.setHttpOnly(true);
-		cookie.setSecure(true);
+		cookie.setSecure(false);
 		cookie.setPath("/");
-		cookie.setMaxAge(3600);
+		cookie.setMaxAge(3600);*/
 
-		response.addCookie(cookie);
+		String cookieString = String.format("token=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=None", token, 3600);
+		response.addHeader("Set-Cookie", cookieString);
 
 		return new ResponseEntity<>(new MessageResDto("Login realizado de forma exitosa", HttpStatus.OK.value()), HttpStatus.OK);
 	}

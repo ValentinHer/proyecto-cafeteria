@@ -27,13 +27,14 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 		String email = oAuth2Token.getPrincipal().getAttribute("email");
 		String jwtToken = jwtUtil.createJwt(email);
 
-		Cookie cookie = new Cookie("token", jwtToken);
+		/*Cookie cookie = new Cookie("token", jwtToken);
 		cookie.setHttpOnly(true);
 		cookie.setSecure(false);
 		cookie.setPath("/");
-		cookie.setMaxAge(3600);
+		cookie.setMaxAge(3600);*/
 
-		response.addCookie(cookie);
+		String cookieString = String.format("token=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=None", jwtToken, 3600);
+		response.addHeader("Set-Cookie", cookieString);
 
 		response.sendRedirect("http://localhost:5173/home");
 	}
