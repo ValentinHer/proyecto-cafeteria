@@ -28,7 +28,7 @@ public class AuthController {
 		cookie.setPath("/");
 		cookie.setMaxAge(3600);*/
 
-		String cookieString = String.format("token=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=Lax", token, 3600);
+		String cookieString = String.format("token=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=None; Secure", token, 3600);
 		response.addHeader("Set-Cookie", cookieString);
 
 		return new ResponseEntity<>(new MessageResDto("Login realizado de forma exitosa", HttpStatus.OK.value()), HttpStatus.OK);
