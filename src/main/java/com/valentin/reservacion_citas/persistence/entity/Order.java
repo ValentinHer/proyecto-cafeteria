@@ -83,6 +83,14 @@ public class Order {
 		this.totalAmount = totalAmount;
 	}
 
+	public String getProviderOrderId() {
+		return providerOrderId;
+	}
+
+	public void setProviderOrderId(String providerOrderId) {
+		this.providerOrderId = providerOrderId;
+	}
+
 	public User getUser() {
 		return user;
 	}

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -17,12 +19,12 @@ public class OrderController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Order> create(@RequestBody OrderReqDto orderReqDto) {
-		return new ResponseEntity<>(orderService.createOrder(orderReqDto), HttpStatus.OK);
+	public ResponseEntity<Order> create(Principal principal) {
+		return new ResponseEntity<>(orderService.createOrder(principal.getName()), HttpStatus.OK);
 	}
 
 	@PostMapping("/{id}/capture")
-	public ResponseEntity<Order> captureOrder(@PathVariable("id") String orderId) {
-		return new ResponseEntity<>(orderService.captureOrder(orderId), HttpStatus.OK);
+	public ResponseEntity<Order> captureOrder(@PathVariable("id") String orderId, Principal principal) {
+		return new ResponseEntity<>(orderService.captureOrder(orderId, principal.getName()), HttpStatus.OK);
 	}
 }

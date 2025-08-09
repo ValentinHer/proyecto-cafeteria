@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -32,19 +31,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		User userFound = userRepository.findByEmail(username)
 									   .orElseThrow(() -> new NotFoundException("Usuario No Encontrado"));
 
-		Optional<AuthProvider> authProvider = userFound.getAuthProviders().stream().filter(provider -> provider.getName().equals(AuthProviders.EMAIL)).findFirst();
+		Optional<AuthProvider> emailAuthProvider = userFound.getAuthProviders().stream().filter(provider -> provider.getName().equals(AuthProviders.EMAIL)).findFirst();
 
 		Role userRoles = roleRepository.findById(userFound.getRoleId())
 									   .orElseThrow(() -> new NotFoundException("Rol No Encontrado"));
 
 		String[] roles = {userRoles.getName().toString()};
 
-		return org.springframework.security.core.userdetails.User.builder()
-																 .username(userFound.getEmail())
-																 .password(authProvider.get().getPassword())
-																 .roles(roles)
-																 .disabled(userFound.getDisabled())
-																 .accountLocked(userFound.getBlocked())
-																 .build();
+		org.springframework.security.core.userdetails.User.UserBuilder userBuilder = org.springframework.security.core.userdetails.User.builder()
+																																	   .username(userFound.getEmail())
+																																	   .roles(roles)
+																																	   .disabled(userFound.getDisabled())
+																																	   .accountLocked(userFound.getBlocked());
+
+		if (emailAuthProvider.isPresent()) {
+			userBuilder.password(emailAuthProvider.get().getPassword());
+		} else {
+			userBuilder.password("");
+		}
+
+		return userBuilder.build();
 	}
 }

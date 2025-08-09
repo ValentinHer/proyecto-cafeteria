@@ -6,7 +6,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -35,8 +34,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 		cookie.setMaxAge(3600);
 
 		response.addCookie(cookie);
-
-		SecurityContextHolder.clearContext();
 
 		response.sendRedirect("http://localhost:5173/home");
 	}

@@ -13,6 +13,7 @@ import com.valentin.reservacion_citas.web.dto.request.AuthProviderReqDto;
 import com.valentin.reservacion_citas.web.dto.request.UserReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.exception.ConflictException;
+import com.valentin.reservacion_citas.web.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,5 +95,10 @@ public class UserServiceImpl implements UserService {
 
 		User userCreated = createUser(userReqDto);
 		AuthProvider authProviderCreated = authProviderService.create(authProviderReqDto, userCreated.getId());
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Usuario No Encontrado"));
 	}
 }

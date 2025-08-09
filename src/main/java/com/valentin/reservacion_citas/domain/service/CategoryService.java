@@ -11,6 +11,8 @@ public interface CategoryService {
 
 	List<CategoryResDto> getAllActive();
 
+	CategoryResDto getByName(String name);
+
 	MessageResDto updateById(CategoryReqDto categoryReqDto, String id);
 
 	MessageResDto deleteById(String id);

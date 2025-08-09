@@ -1,5 +1,6 @@
 package com.valentin.reservacion_citas.domain.mapper;
 
+import com.valentin.reservacion_citas.persistence.entity.CartItem;
 import com.valentin.reservacion_citas.persistence.entity.OrderItem;
 import com.valentin.reservacion_citas.web.dto.request.OrderItemReqDto;
 import com.valentin.reservacion_citas.web.dto.response.OrderItemResDto;
@@ -36,5 +37,15 @@ public class OrderItemMapper {
 		}
 
 		return response;
+	}
+
+	public OrderItem toEntityFromCartItem(CartItem cartItem) {
+		OrderItem orderItem = new OrderItem();
+		orderItem.setProductId(cartItem.getProductId());
+		orderItem.setQuantity(cartItem.getQuantity());
+		orderItem.setUnitaryPrice(cartItem.getUnitaryPrice());
+		orderItem.setTotalAmount(cartItem.getTotalAmount());
+
+		return orderItem;
 	}
 }
