@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -30,27 +31,16 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-		// Validar que haya una cookie válida
-		Cookie[] cookies = request.getCookies();
+		// Validar que sea un Header Authentication valido
+		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-		if(cookies == null || cookies.length < 1){
+		if(authHeader == null || !authHeader.startsWith("Bearer")){
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		Optional<Cookie> cookieFiltered = Arrays.stream(cookies)
-												.filter(cookie -> cookie.getName()
-																		.equals("token"))
-												.findFirst();
-
-		if (cookieFiltered.isEmpty()) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-
-		Cookie cookie = cookieFiltered.get();
-
-		String jwt = cookie.getValue();
+		// Validar que el JWT sea valido
+		String jwt = authHeader.split(" ")[1].trim();
 
 		// Validar que el token sea válido
 		if (!jwtUtil.validJwt(jwt)) {
