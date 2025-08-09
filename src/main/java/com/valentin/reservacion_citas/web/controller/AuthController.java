@@ -32,4 +32,15 @@ public class AuthController {
 
 		return new ResponseEntity<>(new MessageResDto("Login realizado de forma exitosa", HttpStatus.OK.value()), HttpStatus.OK);
 	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<MessageResDto> logout(HttpServletResponse response) {
+		Cookie cookie = new Cookie("token", null);
+		cookie.setPath("/");
+		cookie.setHttpOnly(true);
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
+
+		return new ResponseEntity<>(new MessageResDto("Logout realizado de forma exitosa", HttpStatus.OK.value()), HttpStatus.OK);
+	}
 }

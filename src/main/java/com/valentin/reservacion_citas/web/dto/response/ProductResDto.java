@@ -18,6 +18,8 @@ public class ProductResDto {
 
 	private LocalDateTime createdAt;
 
+	private String urlImage;
+
 	public String getId() {
 		return id;
 	}
@@ -72,5 +74,13 @@ public class ProductResDto {
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public String getUrlImage() {
+		return urlImage;
+	}
+
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
 	}
 }

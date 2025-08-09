@@ -27,4 +27,12 @@ public class MessageResDto {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	@Override
+	public String toString() {
+		return "MessageResDto{" +
+				"message='" + message + '\'' +
+				", status=" + status +
+				'}';
+	}
 }

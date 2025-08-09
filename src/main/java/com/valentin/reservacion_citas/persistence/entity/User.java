@@ -30,7 +30,7 @@ public class User {
 	@Column(name = "desactivado", nullable = false)
 	private Boolean disabled = false;
 
-	@Column(name = "cuenta_bloqueda", nullable = false)
+	@Column(name = "cuenta_bloqueada", nullable = false)
 	private Boolean blocked = false;
 
 	@ManyToOne
@@ -42,6 +42,9 @@ public class User {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Appointment> appointments;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Cart> carts;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<PaymentMethod> paymentMethods;
@@ -130,6 +133,14 @@ public class User {
 
 	public void setAppointments(List<Appointment> appointments) {
 		this.appointments = appointments;
+	}
+
+	public List<Cart> getCarts() {
+		return carts;
+	}
+
+	public void setCarts(List<Cart> carts) {
+		this.carts = carts;
 	}
 
 	public List<PaymentMethod> getPaymentMethods() {

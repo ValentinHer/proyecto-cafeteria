@@ -30,11 +30,14 @@ public class Product {
 	@Column(name = "precio", nullable = false)
 	private BigDecimal price;
 
-	@Column(name = "descripcion", columnDefinition = "VARCHAR(100)", nullable = true)
+	@Column(name = "descripcion", columnDefinition = "TEXT", nullable = true)
 	private String description;
 
 	@Column(name = "activo", nullable = false)
 	private Boolean isActive = true;
+
+	@Column(name = "imagen")
+	private String image;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria", insertable = false, updatable = false)
@@ -102,6 +105,14 @@ public class Product {
 
 	public void setIsActive(Boolean active) {
 		isActive = active;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public Category getCategory() {

@@ -1,10 +1,13 @@
 package com.valentin.reservacion_citas.web.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valentin.reservacion_citas.domain.service.implementation.OAuth2UserServiceImpl;
+import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -16,14 +19,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
-
 @Configuration
 public class SecurityConfig {
 	private final JwtFilter jwtFilter;
+	private final ObjectMapper objectMapper;
 
-	public SecurityConfig(JwtFilter jwtFilter) {
+	public SecurityConfig(JwtFilter jwtFilter, ObjectMapper objectMapper) {
 		this.jwtFilter = jwtFilter;
+		this.objectMapper = objectMapper;
 	}
 
 	@Bean
@@ -36,6 +39,7 @@ public class SecurityConfig {
 						.requestMatchers("/auth/**").permitAll()
 						.requestMatchers("/emails/**").permitAll()
 						.requestMatchers("/webhooks/calendars/**").permitAll()
+						//.requestMatchers(HttpMethod.POST, "/logout").permitAll()
 						.requestMatchers(HttpMethod.POST, "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PATCH, "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/categories/**").hasRole("ADMIN")
@@ -48,29 +52,27 @@ public class SecurityConfig {
 				)
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling(exception -> exception
-						.authenticationEntryPoint(((request, response, authException) -> {
-							/*if (SecurityContextHolder.getContext().getAuthentication() == null) {
-								response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-							} else {
-								response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
-							}*/
+						.authenticationEntryPoint((request, response, authException) -> {
+							MessageResDto messageResDto = new MessageResDto(authException.getMessage(), HttpStatus.UNAUTHORIZED.value());
+							String res = objectMapper.writeValueAsString(messageResDto);
 
-							response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-
-						}))
+							response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+							response.setContentType("application/json;charset=UTF-8");
+							response.getWriter().write(res);
+						})
 						.accessDeniedHandler((request, response, accessDeniedException) -> {
-							response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+							MessageResDto messageResDto = new MessageResDto("No tienes permisos para realizar esta acción", HttpStatus.FORBIDDEN.value());
+							String res = objectMapper.writeValueAsString(messageResDto);
+
+							response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+							response.setContentType("application/json;charset=UTF-8");
+							response.getWriter().write(res);
 						}))
 				.oauth2Login(oauth -> oauth
 						.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
 						.successHandler(oAuthSuccessHandler)
 						.failureHandler(oAuth2FailureHandler)
-				)
-				.logout(logout -> logout
-						.logoutUrl("/logout")
-						.logoutSuccessUrl("/login")
-						.deleteCookies("token")
-						.invalidateHttpSession(false));
+				);
 
 		return http.build();
 	}
