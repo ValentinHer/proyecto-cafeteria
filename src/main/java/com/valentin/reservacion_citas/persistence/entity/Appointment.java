@@ -30,11 +30,11 @@ public class Appointment {
 	private LocalDateTime createdAt;
 
 	@ManyToOne
-	@JoinColumn(name = "id_invitado", referencedColumnName = "id_invitado", nullable = true, insertable = false, updatable = false)
+	@JoinColumn(name = "id_invitado", referencedColumnName = "id_invitado", updatable = false)
 	private Guest guest;
 
 	@ManyToOne
-	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = true, insertable = false, updatable = false)
+	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", updatable = false)
 	private User user;
 
 	@LastModifiedDate

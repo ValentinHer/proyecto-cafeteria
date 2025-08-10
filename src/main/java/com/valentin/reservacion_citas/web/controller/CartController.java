@@ -7,6 +7,7 @@ import com.valentin.reservacion_citas.domain.service.ProductService;
 import com.valentin.reservacion_citas.web.dto.request.CartItemReqDto;
 import com.valentin.reservacion_citas.web.dto.response.CartItemResDto;
 import com.valentin.reservacion_citas.web.dto.response.CartResDto;
+import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.dto.response.MsgDataResDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,5 +40,15 @@ public class CartController {
 	@GetMapping("/active")
 	public ResponseEntity<MsgDataResDto<CartResDto>> getActiveCart(Principal principal) {
 		return new ResponseEntity<>(cartService.getCartWithItems(principal.getName()), HttpStatus.OK);
+	}
+
+	@PostMapping("/delete/{id}")
+	public ResponseEntity<MessageResDto> deleteItemFromCart(@PathVariable String id, Principal principal) {
+		return new ResponseEntity<>(cartItemService.deleteItemFromCart(id, principal.getName()), HttpStatus.OK);
+	}
+
+	@PostMapping("/change-status")
+	public ResponseEntity<MessageResDto> changeCartStatus(Principal principal) {
+		return new ResponseEntity<>(cartService.changeCartStatus(principal.getName()), HttpStatus.OK);
 	}
 }

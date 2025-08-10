@@ -21,6 +21,9 @@ public class CartItem {
 	@Column(name = "id_producto")
 	private String productId;
 
+	@Column(name = "id_carrito")
+	private String cartId;
+
 	@Column(name = "cantidad", nullable = false)
 	private Integer quantity;
 
@@ -35,7 +38,7 @@ public class CartItem {
 	private Product product;
 
 	@ManyToOne
-	@JoinColumn(name = "id_carrito", referencedColumnName = "id_carrito")
+	@JoinColumn(name = "id_carrito", referencedColumnName = "id_carrito", insertable = false, updatable = false)
 	private Cart cart;
 
 	@CreatedDate
@@ -60,6 +63,14 @@ public class CartItem {
 
 	public void setProductId(String productId) {
 		this.productId = productId;
+	}
+
+	public String getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(String cartId) {
+		this.cartId = cartId;
 	}
 
 	public Integer getQuantity() {

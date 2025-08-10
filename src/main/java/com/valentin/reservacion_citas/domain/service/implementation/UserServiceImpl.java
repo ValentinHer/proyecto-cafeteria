@@ -2,14 +2,17 @@ package com.valentin.reservacion_citas.domain.service.implementation;
 
 import com.valentin.reservacion_citas.domain.mapper.UserMapper;
 import com.valentin.reservacion_citas.domain.service.AuthProviderService;
+import com.valentin.reservacion_citas.domain.service.NotificationService;
 import com.valentin.reservacion_citas.domain.service.RoleService;
 import com.valentin.reservacion_citas.domain.service.UserService;
 import com.valentin.reservacion_citas.persistence.entity.AuthProvider;
 import com.valentin.reservacion_citas.persistence.entity.AuthProviders;
 import com.valentin.reservacion_citas.persistence.entity.Role;
 import com.valentin.reservacion_citas.persistence.entity.User;
+import com.valentin.reservacion_citas.persistence.repository.AuthProviderRepository;
 import com.valentin.reservacion_citas.persistence.repository.UserRepository;
 import com.valentin.reservacion_citas.web.dto.request.AuthProviderReqDto;
+import com.valentin.reservacion_citas.web.dto.request.UserChangePasswordReqDto;
 import com.valentin.reservacion_citas.web.dto.request.UserReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.exception.ConflictException;
@@ -27,15 +30,19 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
+	private final AuthProviderRepository authProviderRepository;
 	private final RoleService roleService;
 	private final AuthProviderService authProviderService;
+	private final NotificationService notificationService;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
 	private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-	public UserServiceImpl(UserRepository userRepository, RoleService roleService, UserMapper userMapper, AuthProviderService authProviderService, PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(UserRepository userRepository, AuthProviderRepository authProviderRepository, RoleService roleService, NotificationService notificationService, UserMapper userMapper, AuthProviderService authProviderService, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
+		this.authProviderRepository = authProviderRepository;
 		this.roleService = roleService;
+		this.notificationService = notificationService;
 		this.userMapper = userMapper;
 		this.authProviderService = authProviderService;
 		this.passwordEncoder = passwordEncoder;
@@ -100,5 +107,40 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findByEmail(String email) {
 		return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Usuario No Encontrado"));
+	}
+
+	@Override
+	@Transactional
+	public MessageResDto restoreUserPassword(String email) {
+		User user = findByEmail(email);
+
+		List<AuthProvider> authProviders = user.getAuthProviders();
+
+		if (authProviders.stream().noneMatch(authProvider -> authProvider.getName().equals(AuthProviders.EMAIL))) {
+			throw new ConflictException("Su cuenta no cuenta con el método de auténticación por Email/Password");
+		}
+
+		notificationService.sendEmailToRestorePassword(user.getName(), user.getEmail());
+
+		return new MessageResDto("Email enviado exitosamente para restaurar su contraseña", HttpStatus.OK.value());
+	}
+
+	@Override
+	@Transactional
+	public MessageResDto changeUserPassword(UserChangePasswordReqDto userChangePasswordReqDto) {
+		User user = findByEmail(userChangePasswordReqDto.getEmail());
+
+		List<AuthProvider> authProviders = user.getAuthProviders();
+
+		if (authProviders.stream().noneMatch(authProvider -> authProvider.getName().equals(AuthProviders.EMAIL))) {
+			throw new ConflictException("Su cuenta no cuenta con el método de auténticación por Email/Password");
+		}
+
+		AuthProvider authProvider = authProviders.stream().filter(authProvide -> authProvide.getName().equals(AuthProviders.EMAIL)).findFirst().get();
+
+		authProvider.setPassword(passwordEncoder.encode(userChangePasswordReqDto.getPassword()));
+		AuthProvider authProviderUpdated = authProviderRepository.save(authProvider);
+
+		return new MessageResDto("Contraseña cambiada de forma exitosa", HttpStatus.OK.value());
 	}
 }

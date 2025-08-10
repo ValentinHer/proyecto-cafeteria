@@ -14,13 +14,13 @@ public class CartItemMapper {
 		this.productMapper = productMapper;
 	}
 
-	public CartItem toEntity(CartItemReqDto cartItemReqDto, Cart cart) {
+	public CartItem toEntity(CartItemReqDto cartItemReqDto, String cartId) {
 		CartItem cartItem = new CartItem();
 		cartItem.setProductId(cartItemReqDto.getProductId());
 		cartItem.setQuantity(cartItemReqDto.getQuantity());
 		cartItem.setUnitaryPrice(cartItemReqDto.getUnitaryPrice());
 		cartItem.setTotalAmount(cartItemReqDto.getTotalAmount());
-		cartItem.setCart(cart);
+		cartItem.setCartId(cartId);
 
 		return cartItem;
 	}

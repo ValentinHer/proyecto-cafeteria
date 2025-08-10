@@ -39,7 +39,6 @@ public class SecurityConfig {
 						.requestMatchers("/auth/**").permitAll()
 						.requestMatchers("/emails/**").permitAll()
 						.requestMatchers("/webhooks/calendars/**").permitAll()
-						//.requestMatchers(HttpMethod.POST, "/logout").permitAll()
 						.requestMatchers(HttpMethod.POST, "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PATCH, "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/categories/**").hasRole("ADMIN")

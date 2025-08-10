@@ -1,9 +1,6 @@
 package com.valentin.reservacion_citas.domain.mapper;
 
-import com.valentin.reservacion_citas.persistence.entity.Appointment;
-import com.valentin.reservacion_citas.persistence.entity.Guest;
 import com.valentin.reservacion_citas.persistence.entity.User;
-import com.valentin.reservacion_citas.web.dto.request.GuestReqDto;
 import com.valentin.reservacion_citas.web.dto.request.UserReqDto;
 import org.springframework.stereotype.Component;
 
