@@ -81,4 +81,18 @@ public class NotificationServiceImpl implements NotificationService {
 			logger.error("No se pudo enviar correo al usuario {} con email {}", userName, userEmail, e);
 		}
 	}
+
+	public void sendEmailToRestorePassword(String userName, String userEmail) {
+		Context context = new Context();
+		context.setVariable("nombre", userName);
+
+		String htmlContent = templateEngine.process("restorePassword", context);
+
+		try {
+			emailSender.sendEmail(htmlContent, userEmail, "Restaurar contraseña");
+			logger.info("Correo enviado de forma exitosa al usuario {} con email {}", userName, userEmail);
+		} catch (MessagingException e) {
+			logger.error("No se pudo enviar correo al usuario {} con email {}", userName, userEmail, e);
+		}
+	}
 }

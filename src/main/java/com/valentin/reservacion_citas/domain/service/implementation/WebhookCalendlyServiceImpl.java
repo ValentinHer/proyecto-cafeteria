@@ -103,7 +103,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 		return results;
 	}
 
-	//@PostConstruct
+	@PostConstruct
 	@Override
 	public MessageResDto getOrCreateSubscription() {
 		WebhookCalendlyListSubscriptionsResDto subscriptions = getAllSubscription();

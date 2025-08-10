@@ -8,9 +8,12 @@ import com.valentin.reservacion_citas.persistence.entity.CartStatus;
 import com.valentin.reservacion_citas.persistence.entity.User;
 import com.valentin.reservacion_citas.persistence.repository.CartRepository;
 import com.valentin.reservacion_citas.web.dto.response.CartResDto;
+import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.dto.response.MsgDataResDto;
 import com.valentin.reservacion_citas.web.dto.response.MsgStatus;
+import com.valentin.reservacion_citas.web.exception.NotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -47,7 +50,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	@Transactional
 	public MsgDataResDto<CartResDto> getCartWithItems(String email) {
-		Cart cartFound = createOrRetrieveActiveCartByUser(email);
+		Cart cartFound = retrieveActiveCart(email);
 
 		CartResDto cartResDto = cartMapper.toResponse(cartFound);
 
@@ -57,5 +60,26 @@ public class CartServiceImpl implements CartService {
 		response.setData(cartResDto);
 
 		return response;
+	}
+
+	@Override
+	@Transactional
+	public MessageResDto changeCartStatus(String email) {
+		Cart cart = retrieveActiveCart(email);
+
+		cart.setStatus(CartStatus.ORDERED);
+		Cart cartUpdated = cartRepository.save(cart);
+
+		return new MessageResDto("Carrito ordenado de forma exitosa", HttpStatus.OK.value());
+	}
+
+	private Cart retrieveActiveCart(String email) {
+		User user = userService.findByEmail(email);
+
+		Optional<Cart> cart = cartRepository.findByUserIdAndStatus(user.getId(), CartStatus.ACTIVE);
+
+		if (cart.isEmpty()) throw new NotFoundException("No cuenta con un carrito activo");
+
+		return cart.get();
 	}
 }

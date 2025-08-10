@@ -7,4 +7,6 @@ public interface NotificationService {
 	MessageResDto sendContactEmailToOwner(EmailReqDto emailReqDto);
 
 	void sendAppointmentConfirmationEmail(String userName, String userEmail, String appointmentDate, String appointmentHour);
+
+	void sendEmailToRestorePassword(String userName, String userEmail);
 }
