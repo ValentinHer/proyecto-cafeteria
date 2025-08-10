@@ -16,6 +16,6 @@ public class OAuth2FailureHandler implements AuthenticationFailureHandler {
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		String errorMessage = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
-		response.sendRedirect("http://localhost:5173/login?error=" + errorMessage);
+		response.sendRedirect("https://proyecto-cafeteria-sooty.vercel.app?error=" + errorMessage);
 	}
 }

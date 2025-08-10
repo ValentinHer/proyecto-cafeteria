@@ -36,6 +36,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 		/*String cookieString = String.format("token=%s; Max-Age=%d; Path=/; HttpOnly", jwtToken, 3600);
 		response.addHeader("Set-Cookie", cookieString);*/
 
-		response.sendRedirect("http://localhost:5173/home?token=" + jwtToken);
+		response.sendRedirect("https://proyecto-cafeteria-sooty.vercel.app/home?token=" + jwtToken);
 	}
 }
