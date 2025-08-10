@@ -204,6 +204,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 		return messageResDto;
 	}
 
+	//@PostConstruct
 	private void getCurrentUser() {
 		String payload = restClient.get()
 				.uri(calendlyApiUrl + "users/me")
