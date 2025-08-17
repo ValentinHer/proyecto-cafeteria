@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -22,6 +21,9 @@ public class Order {
 	@Column(name = "id_usuario")
 	private String userId;
 
+	@Column(name = "id_carrito")
+	private String cartId;
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private OrderStatus status;
@@ -29,15 +31,16 @@ public class Order {
 	@Column(name = "pago_total", nullable = false)
 	private BigDecimal totalAmount;
 
-	@Column(name = "proveedor_orden_id", nullable = true)
-	private String providerOrderId;
+	@Column(name = "id_pago_proveedor")
+	private String providerPaymentId;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false, updatable = false)
 	private User user;
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<OrderItem> products;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_carrito", referencedColumnName = "id_carrito", insertable = false, updatable = false)
+	private Cart cart;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_pago", referencedColumnName = "id_pago")
@@ -67,6 +70,14 @@ public class Order {
 		this.userId = userId;
 	}
 
+	public String getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(String cartId) {
+		this.cartId = cartId;
+	}
+
 	public OrderStatus getStatus() {
 		return status;
 	}
@@ -83,12 +94,12 @@ public class Order {
 		this.totalAmount = totalAmount;
 	}
 
-	public String getProviderOrderId() {
-		return providerOrderId;
+	public String getProviderPaymentId() {
+		return providerPaymentId;
 	}
 
-	public void setProviderOrderId(String providerOrderId) {
-		this.providerOrderId = providerOrderId;
+	public void setProviderPaymentId(String providerPaymentId) {
+		this.providerPaymentId = providerPaymentId;
 	}
 
 	public User getUser() {
@@ -99,12 +110,12 @@ public class Order {
 		this.user = user;
 	}
 
-	public List<OrderItem> getProducts() {
-		return products;
+	public Cart getCart() {
+		return cart;
 	}
 
-	public void setProducts(List<OrderItem> products) {
-		this.products = products;
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 
 	public Payment getPayment() {

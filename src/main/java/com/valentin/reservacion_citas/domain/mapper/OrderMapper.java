@@ -1,30 +1,20 @@
 package com.valentin.reservacion_citas.domain.mapper;
 
 import com.valentin.reservacion_citas.persistence.entity.*;
-import com.valentin.reservacion_citas.web.dto.request.OrderReqDto;
 import com.valentin.reservacion_citas.web.dto.response.OrderResDto;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class OrderMapper {
-	private final OrderItemMapper orderItemMapper;
 
-	public OrderMapper(OrderItemMapper orderItemMapper) {
-		this.orderItemMapper = orderItemMapper;
-	}
-
-	public Order toEntity(OrderReqDto orderReqDto, Payment payment, String userId) {
+	public Order toEntity(Payment payment, String userId, BigDecimal totalAmount) {
 		Order order = new Order();
 		order.setUserId(userId);
 		order.setPayment(payment);
 		order.setStatus(OrderStatus.CREATED);
-		order.setTotalAmount(orderReqDto.getTotalPurchase());
-		order.setProducts(orderReqDto.getItems().stream().map(item -> {
-			OrderItem orderItem = orderItemMapper.toEntity(item);
-			orderItem.setOrder(order);
-
-			return orderItem;
-		}).toList());
+		order.setTotalAmount(totalAmount);
 
 		return order;
 	}
@@ -37,10 +27,6 @@ public class OrderMapper {
 		response.setStatus(order.getStatus());
 		response.setCreatedAt(order.getCreatedAt());
 
-		if(withOrderItems) {
-			response.setItems(order.getProducts().stream().map(product -> orderItemMapper.toResponse(product, false)).toList());
-		}
-
 		return response;
 	}
 
@@ -49,12 +35,6 @@ public class OrderMapper {
 		order.setUserId(userId);
 		order.setStatus(OrderStatus.CREATED);
 		order.setTotalAmount(cart.getTotalAmount());
-		order.setProducts(cart.getProducts().stream().map(item -> {
-			OrderItem orderItem = orderItemMapper.toEntityFromCartItem(item);
-			orderItem.setOrder(order);
-
-			return orderItem;
-		}).toList());
 
 		return order;
 	}

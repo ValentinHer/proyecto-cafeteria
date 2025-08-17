@@ -35,6 +35,9 @@ public class Cart {
 	@OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<CartItem> products;
 
+	@OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Payment> payments;
+
 	@CreatedDate
 	private LocalDateTime createdAt;
 
@@ -87,6 +90,14 @@ public class Cart {
 
 	public void setProducts(List<CartItem> products) {
 		this.products = products;
+	}
+
+	public List<Payment> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
 	}
 
 	public LocalDateTime getCreatedAt() {

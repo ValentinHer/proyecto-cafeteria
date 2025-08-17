@@ -13,9 +13,12 @@ import com.valentin.reservacion_citas.web.dto.response.MsgDataResDto;
 import com.valentin.reservacion_citas.web.dto.response.MsgStatus;
 import com.valentin.reservacion_citas.web.exception.NotFoundException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,7 @@ public class CartServiceImpl implements CartService {
 	private final CartRepository cartRepository;
 	private final UserService userService;
 	private final CartMapper cartMapper;
+	private final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
 	public CartServiceImpl(CartRepository cartRepository, UserService userService, CartMapper cartMapper) {
 		this.cartRepository = cartRepository;
@@ -31,7 +35,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Cart createOrRetrieveActiveCartByUser(String email) {
+	public Cart createOrGetActiveCartByUser(String email) {
 		User user = userService.findByEmail(email);
 
 		Optional<Cart> cart = cartRepository.findByUserIdAndStatus(user.getId(), CartStatus.ACTIVE);
@@ -48,11 +52,17 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
+	public Cart getCartById(String cartId) {
+		Cart cartFound = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("Carrito no encontrado"));
+		return cartFound;
+	}
+
+	@Override
 	@Transactional
 	public MsgDataResDto<CartResDto> getCartWithItems(String email) {
-		Cart cartFound = retrieveActiveCart(email);
+		Cart cartFound = getActiveCart(email);
 
-		CartResDto cartResDto = cartMapper.toResponse(cartFound);
+		CartResDto cartResDto = cartMapper.toResponse(cartFound, false);
 
 		MsgDataResDto<CartResDto> response = new MsgDataResDto<>();
 		response.setStatus(MsgStatus.SUCCESS);
@@ -65,7 +75,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	@Transactional
 	public MessageResDto changeCartStatus(String email) {
-		Cart cart = retrieveActiveCart(email);
+		Cart cart = getActiveCart(email);
 
 		cart.setStatus(CartStatus.ORDERED);
 		Cart cartUpdated = cartRepository.save(cart);
@@ -73,7 +83,8 @@ public class CartServiceImpl implements CartService {
 		return new MessageResDto("Carrito ordenado de forma exitosa", HttpStatus.OK.value());
 	}
 
-	private Cart retrieveActiveCart(String email) {
+	@Override
+	public Cart getActiveCart(String email) {
 		User user = userService.findByEmail(email);
 
 		Optional<Cart> cart = cartRepository.findByUserIdAndStatus(user.getId(), CartStatus.ACTIVE);
@@ -82,4 +93,13 @@ public class CartServiceImpl implements CartService {
 
 		return cart.get();
 	}
+
+	@Override
+	public void updateTotalAmount(Cart cart, BigDecimal totalAmount) {
+		cart.setTotalAmount(totalAmount);
+		Cart cartUpdated = cartRepository.save(cart);
+		logger.info("Carrito {} actualizado", cartUpdated.getId());
+	}
+
+
 }

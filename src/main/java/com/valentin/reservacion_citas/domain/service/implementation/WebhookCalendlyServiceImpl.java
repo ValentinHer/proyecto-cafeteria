@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -38,7 +37,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 	private final AppointmentService appointmentService;
 	private final RestClient restClient;
 	private final NotificationService notificationService;
-	private static final Logger logger = LoggerFactory.getLogger(WebhookCalendlyServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(WebhookCalendlyServiceImpl.class);
 
 	@Value("${calendly.api.url}")
 	private String calendlyApiUrl;
@@ -68,7 +67,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 
 	public WebhookCalendlyListSubscriptionsResDto getAllSubscription() {
 		WebhookCalendlyListSubscriptionsResDto results = restClient.get()
-						 .uri("webhook_subscriptions?organization={organization}&user={user}&scope={scope}", calendlyOrgUrl, calendlyUserUrl, calendlyScope)
+						 .uri(String.format("%swebhook_subscriptions?organization=%s&user=%s&scope=%s", calendlyApiUrl, calendlyOrgUrl, calendlyUserUrl, calendlyScope))
 						 .header("Authorization", "Bearer " + calendlyToken)
 						 .header("Content-Type", "application/json")
 						 .retrieve()
@@ -104,8 +103,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 	}
 
 	@PostConstruct
-	@Override
-	public MessageResDto getOrCreateSubscription() {
+	public void getOrCreateSubscription() {
 		WebhookCalendlyListSubscriptionsResDto subscriptions = getAllSubscription();
 		List<WebhookCalendlySubscriptionResDto> existSubscription = subscriptions.getCollection()
 																				 .stream()
@@ -166,15 +164,14 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 																					.body(WebhookCalendlyCreateSubscriptionResDto.class);
 
 			logger.info("Suscripción al weebhook de calendly creada de forma exitosa: {}", subscriptionCreated);
-			return new MessageResDto("Suscripción creada", HttpStatus.CREATED.value());
+			return;
 		}
 
 		logger.info("Suscripción existente: {}", existSubscription);
-		return new MessageResDto("La suscripción ya existe", HttpStatus.OK.value());
 	}
 
 	@Override
-	public MessageResDto handleAppointmentCreated(WebhookAppointmentCreatedReqDto payload) {
+	public void handleAppointmentCreated(WebhookAppointmentCreatedReqDto payload) {
 		AppointmentReqDto appointmentReqDto = new AppointmentReqDto();
 		appointmentReqDto.setStartTime(payload.getPayload().getScheduledEvent().getStartTime());
 		appointmentReqDto.setEndTime(payload.getPayload().getScheduledEvent().getEndTime());
@@ -200,8 +197,6 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 														payload.getPayload().getEmail(),
 														appointmentDate,
 														appointmentHour);
-
-		return messageResDto;
 	}
 
 	//@PostConstruct

@@ -20,15 +20,15 @@ public class PaymentMethod {
 	private String userId;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "proveedor_pago")
+	@Column(name = "proveedor_pago", unique = true)
 	private PaymentProviders provider;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo")
 	private PaymentTypes type;
 
-	@Column(name = "proveedor_id_metodo", nullable = true)
-	private String providerMethodId;
+	@Column(name = "proveedor_value")
+	private String providerValue;
 
 	@Column(name = "activo")
 	private Boolean isActive;
@@ -73,12 +73,12 @@ public class PaymentMethod {
 		this.type = type;
 	}
 
-	public String getProviderMethodId() {
-		return providerMethodId;
+	public String getProviderValue() {
+		return providerValue;
 	}
 
-	public void setProviderMethodId(String providerMethodId) {
-		this.providerMethodId = providerMethodId;
+	public void setProviderValue(String providerValue) {
+		this.providerValue = providerValue;
 	}
 
 	public Boolean getIsActive() {

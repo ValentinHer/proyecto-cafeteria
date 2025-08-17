@@ -7,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class WebhookAppointmentCreatedReqDto {
 
 	@JsonProperty("payload")
-	WebhookPayloadReqDto payload;
+	WebhookCalendlyPayloadReqDto payload;
 
-	public WebhookPayloadReqDto getPayload() {
+	public WebhookCalendlyPayloadReqDto getPayload() {
 		return payload;
 	}
 
-	public void setPayload(WebhookPayloadReqDto payload) {
+	public void setPayload(WebhookCalendlyPayloadReqDto payload) {
 		this.payload = payload;
 	}
 

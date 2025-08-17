@@ -60,11 +60,11 @@ public class ProductReqDto {
 		this.price = price;
 	}
 
-	public @NotNull(message = "La descripción es requerido") String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(@NotNull(message = "La descripción es requerido") String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
