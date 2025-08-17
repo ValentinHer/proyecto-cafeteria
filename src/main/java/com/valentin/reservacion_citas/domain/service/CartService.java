@@ -5,6 +5,8 @@ import com.valentin.reservacion_citas.web.dto.response.CartResDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.dto.response.MsgDataResDto;
 
+import java.math.BigDecimal;
+
 public interface CartService {
 	Cart createOrGetActiveCartByUser(String email);
 
@@ -15,4 +17,6 @@ public interface CartService {
 	MessageResDto changeCartStatus(String email);
 
 	Cart getActiveCart(String email);
+
+	void updateTotalAmount(Cart cart, BigDecimal totalAmount);
 }

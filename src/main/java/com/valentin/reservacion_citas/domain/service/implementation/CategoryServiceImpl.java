@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
 		Category category = categoryMapper.toEntity(categoryReqDto);
 		categoryRepository.save(category);
 
-		return new MessageResDto("Categoría guardada exitosamente", HttpStatus.OK.value());
+		return new MessageResDto("Categoría guardada exitosamente", HttpStatus.CREATED.value());
 	}
 
 	@Override

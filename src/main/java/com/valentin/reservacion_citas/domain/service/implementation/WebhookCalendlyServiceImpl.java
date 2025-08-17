@@ -67,7 +67,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 
 	public WebhookCalendlyListSubscriptionsResDto getAllSubscription() {
 		WebhookCalendlyListSubscriptionsResDto results = restClient.get()
-						 .uri("{apiUrl}webhook_subscriptions?organization={organization}&user={user}&scope={scope}", calendlyApiUrl, calendlyOrgUrl, calendlyUserUrl, calendlyScope)
+						 .uri(String.format("%swebhook_subscriptions?organization=%s&user=%s&scope=%s", calendlyApiUrl, calendlyOrgUrl, calendlyUserUrl, calendlyScope))
 						 .header("Authorization", "Bearer " + calendlyToken)
 						 .header("Content-Type", "application/json")
 						 .retrieve()

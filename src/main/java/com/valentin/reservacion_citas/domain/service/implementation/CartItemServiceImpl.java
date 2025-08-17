@@ -38,6 +38,17 @@ public class CartItemServiceImpl implements CartItemService {
 		this.cartItemMapper = cartItemMapper;
 	}
 
+	private MsgDataResDto<CartItemResDto> updateCartAndReturnItemData(Cart cart, CartItem cartItem, BigDecimal totalAmount) {
+		cartService.updateTotalAmount(cart, totalAmount);
+
+		MsgDataResDto<CartItemResDto> response = new MsgDataResDto<>();
+		response.setMessage("Producto agregado al carrito");
+		response.setStatus(MsgStatus.SUCCESS);
+		response.setData(cartItemMapper.toResponse(cartItem, false));
+
+		return response;
+	}
+
 	@Override
 	@Transactional
 	public MsgDataResDto<CartItemResDto> addToCart(CartItemReqDto cartItemReqDto, String email) {
@@ -56,32 +67,14 @@ public class CartItemServiceImpl implements CartItemService {
 			CartItem cartItemUpdated = cartItemRepository.save(cartItemFound);
 			logger.info("Producto {} actualizado", cartItemUpdated.getId());
 
-			cart.setTotalAmount(cart.getTotalAmount().add(cartItemReqDto.getTotalAmount()));
-			Cart cartUpdated = cartRepository.save(cart);
-			logger.info("Carrito {} actualizado", cartUpdated.getId());
-
-			MsgDataResDto<CartItemResDto> response = new MsgDataResDto<>();
-			response.setMessage("Producto agregado al carrito");
-			response.setStatus(MsgStatus.SUCCESS);
-			response.setData(cartItemMapper.toResponse(cartItemUpdated, false));
-
-			return response;
+			return updateCartAndReturnItemData(cart, cartItemUpdated, cart.getTotalAmount().add(cartItemReqDto.getTotalAmount()));
 		}
 
 		CartItem cartItem = cartItemMapper.toEntity(cartItemReqDto, cart.getId());
 		CartItem cartItemSaved = cartItemRepository.save(cartItem);
 		logger.info("Producto {} guardado", cartItemSaved.getId());
 
-		cart.setTotalAmount(cart.getTotalAmount().add(cartItemSaved.getTotalAmount()));
-		Cart cartUpdated = cartRepository.save(cart);
-		logger.info("Carrito {} actualizado", cartUpdated.getId());
-
-		MsgDataResDto<CartItemResDto> response = new MsgDataResDto<>();
-		response.setMessage("Producto agregado al carrito");
-		response.setStatus(MsgStatus.SUCCESS);
-		response.setData(cartItemMapper.toResponse(cartItemSaved, false));
-
-		return response;
+		return updateCartAndReturnItemData(cart, cartItemSaved, cart.getTotalAmount().add(cartItemSaved.getTotalAmount()));
 	}
 
 	@Override
@@ -101,11 +94,8 @@ public class CartItemServiceImpl implements CartItemService {
 
 		cartItemRepository.deleteById(cartItemId);
 
-		cart.setTotalAmount(totalCartUpdated);
-		Cart cartUpdated = cartRepository.save(cart);
+		cartService.updateTotalAmount(cart, totalCartUpdated);
 
 		return new MessageResDto("Item eliminado correctamente del carrito", HttpStatus.OK.value());
 	}
-
-
 }

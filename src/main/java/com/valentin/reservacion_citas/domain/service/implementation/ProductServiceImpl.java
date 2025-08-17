@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
 		productRepository.save(product);
 
-		return new MessageResDto("Producto guardado exitosamente", HttpStatus.OK.value());
+		return new MessageResDto("Producto guardado exitosamente", HttpStatus.CREATED.value());
 	}
 
 	@Override

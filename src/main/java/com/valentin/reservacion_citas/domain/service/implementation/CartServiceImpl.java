@@ -13,9 +13,12 @@ import com.valentin.reservacion_citas.web.dto.response.MsgDataResDto;
 import com.valentin.reservacion_citas.web.dto.response.MsgStatus;
 import com.valentin.reservacion_citas.web.exception.NotFoundException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,7 @@ public class CartServiceImpl implements CartService {
 	private final CartRepository cartRepository;
 	private final UserService userService;
 	private final CartMapper cartMapper;
+	private final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
 	public CartServiceImpl(CartRepository cartRepository, UserService userService, CartMapper cartMapper) {
 		this.cartRepository = cartRepository;
@@ -89,4 +93,13 @@ public class CartServiceImpl implements CartService {
 
 		return cart.get();
 	}
+
+	@Override
+	public void updateTotalAmount(Cart cart, BigDecimal totalAmount) {
+		cart.setTotalAmount(totalAmount);
+		Cart cartUpdated = cartRepository.save(cart);
+		logger.info("Carrito {} actualizado", cartUpdated.getId());
+	}
+
+
 }
