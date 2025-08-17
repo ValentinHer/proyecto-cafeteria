@@ -38,7 +38,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(request -> request
 						.requestMatchers("/auth/**").permitAll()
 						.requestMatchers("/emails/**").permitAll()
-						.requestMatchers("/webhooks/calendars/**").permitAll()
+						.requestMatchers("/webhooks/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PATCH, "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/categories/**").hasRole("ADMIN")

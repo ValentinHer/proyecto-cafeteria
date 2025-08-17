@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WebhookPayloadReqDto {
+public class WebhookCalendlyPayloadReqDto {
 
 	@JsonProperty("email")
 	private String email;
@@ -13,7 +13,7 @@ public class WebhookPayloadReqDto {
 	private String name;
 
 	@JsonProperty("scheduled_event")
-	private WebhookPayloadScheduledAppointmentReqDto scheduledEvent;
+	private WebhookCalendlyPayloadScheduledAppointmentReqDto scheduledEvent;
 
 	public String getEmail() {
 		return email;
@@ -31,11 +31,11 @@ public class WebhookPayloadReqDto {
 		this.name = name;
 	}
 
-	public WebhookPayloadScheduledAppointmentReqDto getScheduledEvent() {
+	public WebhookCalendlyPayloadScheduledAppointmentReqDto getScheduledEvent() {
 		return scheduledEvent;
 	}
 
-	public void setScheduledEvent(WebhookPayloadScheduledAppointmentReqDto scheduledEvent) {
+	public void setScheduledEvent(WebhookCalendlyPayloadScheduledAppointmentReqDto scheduledEvent) {
 		this.scheduledEvent = scheduledEvent;
 	}
 

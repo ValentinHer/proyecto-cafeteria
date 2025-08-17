@@ -22,6 +22,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,10 +47,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public MessageResDto create(ProductReqDto productReqDto) {
+	public MessageResDto create(ProductReqDto productReqDto, MultipartFile file) throws IOException {
 		categoryService.getById(productReqDto.getCategoryId());
 
+		String filename = String.format("%s-%s", UUID.randomUUID().toString(), file.getOriginalFilename());
+		cloudStorageService.uploadImage(file.getBytes(), filename);
+
 		Product product = productMapper.toEntity(productReqDto);
+		product.setImage(filename);
+
 		productRepository.save(product);
 
 		return new MessageResDto("Producto guardado exitosamente", HttpStatus.OK.value());
@@ -60,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
 	public ProductResDto getOneById(String id, Boolean withCategory) {
 		Product productFound = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Producto no encontrado"));
 
-		return productMapper.toResponse(productFound, withCategory);
+		return productMapper.toResponse(productFound, withCategory, false);
 	}
 
 	@Override
@@ -70,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public MessageResDto updateById(ProductReqDto productReqDto, String id) {
+	public MessageResDto updateById(ProductReqDto productReqDto, MultipartFile file, String id) throws IOException {
 		if (productReqDto.getCategoryId() != null) {
 			categoryService.getById(productReqDto.getCategoryId());
 		}
@@ -78,6 +84,15 @@ public class ProductServiceImpl implements ProductService {
 		Product productFound = getById(id);
 
 		productMapper.toUpdate(productFound, productReqDto);
+
+		if (file != null && !file.isEmpty()) {
+			String newFilename = String.format("%s-%s", UUID.randomUUID().toString(), file.getOriginalFilename());
+			cloudStorageService.deleteImage(productFound.getImage());
+			cloudStorageService.uploadImage(file.getBytes(), newFilename);
+
+			productFound.setImage(newFilename);
+		}
+
 		productRepository.save(productFound);
 
 		return new MessageResDto("Producto actualizado exitosamente", HttpStatus.OK.value());
@@ -87,6 +102,7 @@ public class ProductServiceImpl implements ProductService {
 	public MessageResDto deleteById(String id) {
 		Product productFound = getById(id);
 
+		cloudStorageService.deleteImage(productFound.getImage());
 		productRepository.deleteById(id);
 
 		return new MessageResDto("Producto eliminado exitosamente", HttpStatus.OK.value());

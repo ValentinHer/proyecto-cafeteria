@@ -32,14 +32,17 @@ public class ProductMapper {
 		return product;
 	}
 
-	public ProductResDto toResponse(Product product, Boolean withCategory) {
+	public ProductResDto toResponse(Product product, Boolean withCategory, Boolean withUrlImage) {
 		ProductResDto response = new ProductResDto();
 		response.setId(product.getId());
 		response.setName(product.getName());
 		response.setDescription(product.getDescription());
 		response.setStock(product.getStock());
 		response.setPrice(product.getPrice());
-		response.setUrlImage(cloudStorageService.getImagePresignedUrl(product.getImage()));
+
+		if (withUrlImage) {
+			response.setUrlImage(cloudStorageService.getImagePresignedUrl(product.getImage()));
+		}
 
 		if (withCategory) {
 			response.setCategory(categoryMapper.toResponse(product.getCategory()));
@@ -51,7 +54,7 @@ public class ProductMapper {
 	}
 
 	public List<ProductResDto> toResponseList(List<Product> products) {
-		return products.stream().map(product -> toResponse(product, true)).toList();
+		return products.stream().map(product -> toResponse(product, true, true)).toList();
 	}
 
 	public void toUpdate(Product product, ProductReqDto productReqDto) {

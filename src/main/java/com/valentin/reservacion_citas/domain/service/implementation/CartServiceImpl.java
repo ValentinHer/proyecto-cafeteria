@@ -31,7 +31,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Cart createOrRetrieveActiveCartByUser(String email) {
+	public Cart createOrGetActiveCartByUser(String email) {
 		User user = userService.findByEmail(email);
 
 		Optional<Cart> cart = cartRepository.findByUserIdAndStatus(user.getId(), CartStatus.ACTIVE);
@@ -48,11 +48,17 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
+	public Cart getCartById(String cartId) {
+		Cart cartFound = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("Carrito no encontrado"));
+		return cartFound;
+	}
+
+	@Override
 	@Transactional
 	public MsgDataResDto<CartResDto> getCartWithItems(String email) {
-		Cart cartFound = retrieveActiveCart(email);
+		Cart cartFound = getActiveCart(email);
 
-		CartResDto cartResDto = cartMapper.toResponse(cartFound);
+		CartResDto cartResDto = cartMapper.toResponse(cartFound, false);
 
 		MsgDataResDto<CartResDto> response = new MsgDataResDto<>();
 		response.setStatus(MsgStatus.SUCCESS);
@@ -65,7 +71,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	@Transactional
 	public MessageResDto changeCartStatus(String email) {
-		Cart cart = retrieveActiveCart(email);
+		Cart cart = getActiveCart(email);
 
 		cart.setStatus(CartStatus.ORDERED);
 		Cart cartUpdated = cartRepository.save(cart);
@@ -73,7 +79,8 @@ public class CartServiceImpl implements CartService {
 		return new MessageResDto("Carrito ordenado de forma exitosa", HttpStatus.OK.value());
 	}
 
-	private Cart retrieveActiveCart(String email) {
+	@Override
+	public Cart getActiveCart(String email) {
 		User user = userService.findByEmail(email);
 
 		Optional<Cart> cart = cartRepository.findByUserIdAndStatus(user.getId(), CartStatus.ACTIVE);

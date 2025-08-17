@@ -1,6 +1,5 @@
 package com.valentin.reservacion_citas.domain.mapper;
 
-import com.valentin.reservacion_citas.persistence.entity.Cart;
 import com.valentin.reservacion_citas.persistence.entity.CartItem;
 import com.valentin.reservacion_citas.web.dto.request.CartItemReqDto;
 import com.valentin.reservacion_citas.web.dto.response.CartItemResDto;
@@ -34,7 +33,7 @@ public class CartItemMapper {
 		response.setTotalAmount(cartItem.getTotalAmount());
 
 		if (withProductDetails) {
-			response.setProductResDto(productMapper.toResponse(cartItem.getProduct(), false));
+			response.setProductResDto(productMapper.toResponse(cartItem.getProduct(), false, false));
 		}
 
 		return response;

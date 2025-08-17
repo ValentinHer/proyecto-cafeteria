@@ -8,7 +8,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WebhookPayloadScheduledAppointmentReqDto {
+public class WebhookCalendlyPayloadScheduledAppointmentReqDto {
 
 	@JsonProperty("name")
 	private String name;

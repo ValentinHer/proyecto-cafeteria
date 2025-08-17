@@ -38,7 +38,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 	private final AppointmentService appointmentService;
 	private final RestClient restClient;
 	private final NotificationService notificationService;
-	private static final Logger logger = LoggerFactory.getLogger(WebhookCalendlyServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(WebhookCalendlyServiceImpl.class);
 
 	@Value("${calendly.api.url}")
 	private String calendlyApiUrl;
@@ -68,7 +68,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 
 	public WebhookCalendlyListSubscriptionsResDto getAllSubscription() {
 		WebhookCalendlyListSubscriptionsResDto results = restClient.get()
-						 .uri("webhook_subscriptions?organization={organization}&user={user}&scope={scope}", calendlyOrgUrl, calendlyUserUrl, calendlyScope)
+						 .uri("{apiUrl}webhook_subscriptions?organization={organization}&user={user}&scope={scope}", calendlyApiUrl, calendlyOrgUrl, calendlyUserUrl, calendlyScope)
 						 .header("Authorization", "Bearer " + calendlyToken)
 						 .header("Content-Type", "application/json")
 						 .retrieve()
@@ -103,7 +103,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 		return results;
 	}
 
-	@PostConstruct
+	//@PostConstruct
 	@Override
 	public MessageResDto getOrCreateSubscription() {
 		WebhookCalendlyListSubscriptionsResDto subscriptions = getAllSubscription();

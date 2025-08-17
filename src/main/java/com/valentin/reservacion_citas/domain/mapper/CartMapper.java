@@ -12,13 +12,13 @@ public class CartMapper {
 		this.cartItemMapper = cartItemMapper;
 	}
 
-	public CartResDto toResponse(Cart cart) {
+	public CartResDto toResponse(Cart cart, Boolean withProductDetails) {
 		CartResDto cartResDto = new CartResDto();
 		cartResDto.setId(cart.getId());
 		cartResDto.setStatus(cart.getStatus());
 		cartResDto.setUserId(cart.getUserId());
 		cartResDto.setTotalAmount(cart.getTotalAmount());
-		cartResDto.setItems(cart.getProducts().stream().map(item -> cartItemMapper.toResponse(item, false)).toList());
+		cartResDto.setItems(cart.getProducts().stream().map(item -> cartItemMapper.toResponse(item, withProductDetails)).toList());
 		cartResDto.setCreatedAt(cart.getCreatedAt());
 
 		return cartResDto;

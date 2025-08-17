@@ -2,6 +2,7 @@ package com.valentin.reservacion_citas.persistence.entity;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
@@ -23,6 +24,9 @@ public class Payment {
 	@Column(name = "id_usuario")
 	private String userId;
 
+	@Column(name = "id_carrito")
+	private String cartId;
+
 	@Column(name = "pago_total", nullable = false)
 	private BigDecimal TotalAmount;
 
@@ -34,12 +38,16 @@ public class Payment {
 	@Column(nullable = false)
 	private PaymentStatus status;
 
-	@Column(name = "id_pago_proveedor")
-	private String providerPaymentId;
+	@Column(name = "id_orden_proveedor")
+	private String providerOrderId;
 
 	@ManyToOne
 	@JoinColumn(name = "id_metodo_pago", referencedColumnName = "id_metodo_pago", insertable = false, updatable = false)
 	private PaymentMethod paymentMethod;
+
+	@ManyToOne
+	@JoinColumn(name = "id_carrito", referencedColumnName = "id_carrito", insertable = false, updatable = false)
+	private Cart cart;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false, updatable = false)
@@ -48,6 +56,10 @@ public class Payment {
 	@CreatedDate
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
 	private LocalDateTime createdAt;
+
+	@LastModifiedDate
+	@Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+	private LocalDateTime updatedAt;
 
 	public String getId() {
 		return id;
@@ -71,6 +83,14 @@ public class Payment {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(String cartId) {
+		this.cartId = cartId;
 	}
 
 	public BigDecimal getTotalAmount() {
@@ -97,12 +117,12 @@ public class Payment {
 		this.status = status;
 	}
 
-	public String getProviderPaymentId() {
-		return providerPaymentId;
+	public String getProviderOrderId() {
+		return providerOrderId;
 	}
 
-	public void setProviderPaymentId(String providerPaymentId) {
-		this.providerPaymentId = providerPaymentId;
+	public void setProviderOrderId(String providerOrderId) {
+		this.providerOrderId = providerOrderId;
 	}
 
 	public PaymentMethod getPaymentMethod() {
@@ -111,6 +131,14 @@ public class Payment {
 
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 
 	public User getUser() {
@@ -127,5 +155,13 @@ public class Payment {
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

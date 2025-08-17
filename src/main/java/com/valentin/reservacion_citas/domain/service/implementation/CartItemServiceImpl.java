@@ -41,7 +41,7 @@ public class CartItemServiceImpl implements CartItemService {
 	@Override
 	@Transactional
 	public MsgDataResDto<CartItemResDto> addToCart(CartItemReqDto cartItemReqDto, String email) {
-		Cart cart = cartService.createOrRetrieveActiveCartByUser(email);
+		Cart cart = cartService.createOrGetActiveCartByUser(email);
 
 		BigDecimal total = cartItemReqDto.getUnitaryPrice().multiply(BigDecimal.valueOf(cartItemReqDto.getQuantity()));
 		cartItemReqDto.setTotalAmount(total);
@@ -87,7 +87,7 @@ public class CartItemServiceImpl implements CartItemService {
 	@Override
 	@Transactional
 	public MessageResDto deleteItemFromCart(String cartItemId, String email) {
-		Cart cart = cartService.createOrRetrieveActiveCartByUser(email);
+		Cart cart = cartService.createOrGetActiveCartByUser(email);
 
 		List<CartItem> cartItems = cart.getProducts();
 

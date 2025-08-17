@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends ListCrudRepository<Order, String> {
-	Optional<Order> findByProviderOrderId(String providerOrderId);
 }
