@@ -4,7 +4,6 @@ import com.valentin.reservacion_citas.domain.service.AuthService;
 import com.valentin.reservacion_citas.web.dto.request.UserLoginReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageJwtResDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -8,8 +8,6 @@ import com.valentin.reservacion_citas.web.dto.request.UserReqDto;
 import com.valentin.reservacion_citas.web.dto.request.UserRestorePasswordReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
