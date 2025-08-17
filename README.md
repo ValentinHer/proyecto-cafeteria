@@ -1,11 +1,9 @@
 # 📌 Proyecto Cafetería
 
----
 Proyecto que presenta una solución integral para los servicios que ofrece una cafetería, con el propósito de optimizar las operaciones diarias, mejorar la experiencia del usuario y facilitar la administración del negocio.
 
 ## 🚀 Características
 
----
 - ✅ Registro y Login con Email / Password.
 - ✅ Registro y Login con Google.
 - ✅ Gestión de categorías para los productos.
@@ -18,16 +16,14 @@ Proyecto que presenta una solución integral para los servicios que ofrece una c
 
 ## 🛠️ Tecnologías utilizadas
 
----
 Este proyecto fue desarrollado con: 
 
 - Java con Spring Boot.
 - IntelliJ IDEA, Git, Docker, PostgreSQL.
-- OAuth2.0, JWT, Swagger, AWS S3, Webhook de Calendly, PayPal (API y Webhook).
+- OAuth2.0, JWT, Swagger, AWS S3, Webhook de Calendly, API y Webhook de PayPal.
 
 ## 📦 Instalación y Configuración
 
----
 1. **Clona o descarga el archivo `.zip` de este repositorio**.
 
 1. **Crear un bucket en AWS para realizar la carga de imágenes**.
