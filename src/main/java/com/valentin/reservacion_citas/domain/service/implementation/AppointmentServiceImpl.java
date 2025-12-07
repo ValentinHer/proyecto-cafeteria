@@ -13,12 +13,15 @@ import com.valentin.reservacion_citas.persistence.repository.UserRepository;
 import com.valentin.reservacion_citas.web.dto.request.AppointmentReqDto;
 import com.valentin.reservacion_citas.web.dto.request.GuestReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
+import com.valentin.reservacion_citas.web.dto.response.MsgDataResDto;
+import com.valentin.reservacion_citas.web.dto.response.MsgStatus;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,4 +83,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 		logger.info("Reservación creada y asignada al invitado {} con email {}", guest.getName(), guest.getEmail());
 		return new MessageResDto("Reservación creada de forma exitosa", HttpStatus.CREATED.value());
 	}
+
+    @Transactional
+    @Override
+    public MsgDataResDto getAllAppointments() {
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+        MsgDataResDto msgDataResDto = new MsgDataResDto();
+        msgDataResDto.setMessage("Citas recuperadas");
+        msgDataResDto.setStatus(MsgStatus.SUCCESS);
+        msgDataResDto.setData(appointments);
+
+        return msgDataResDto;
+    }
 }

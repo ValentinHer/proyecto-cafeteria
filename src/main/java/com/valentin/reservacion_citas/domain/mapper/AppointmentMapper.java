@@ -10,6 +10,7 @@ public class AppointmentMapper {
 		Appointment appointment = new Appointment();
 		appointment.setStartTime(appointmentReqDto.getStartTime());
 		appointment.setEndTime(appointmentReqDto.getEndTime());
+        appointment.setMessage(appointmentReqDto.getMessage());
 		appointment.setStatus(appointmentReqDto.getStatus());
 		appointment.setCreatedAt(appointmentReqDto.getCreatedAt());
 

@@ -1,10 +1,12 @@
 package com.valentin.reservacion_citas.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.valentin.reservacion_citas.domain.service.ProductService;
 import com.valentin.reservacion_citas.web.dto.request.ProductReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.dto.response.ProductResDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -21,17 +23,21 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 	private final ProductService productService;
+    private final ObjectMapper objectMapper;
 
-	public ProductController(ProductService productService) {
+	public ProductController(ProductService productService, ObjectMapper objectMapper) {
 		this.productService = productService;
-	}
+        this.objectMapper = objectMapper;
+    }
 
 	@Operation(summary = "Crear producto", description = "Crear nuevo producto")
 	@ApiResponse(responseCode = "201", description = "Producto guardado")
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<MessageResDto> create(@Valid @RequestPart("product") ProductReqDto productReqDto,
-												@RequestPart MultipartFile file) throws IOException {
-		return new ResponseEntity<>(productService.create(productReqDto, file), HttpStatus.CREATED);
+	public ResponseEntity<MessageResDto> create(@Valid @RequestParam("product") String productReqDto,
+                                                @RequestPart MultipartFile file) throws IOException {
+        ProductReqDto productJson = objectMapper.readValue(productReqDto, ProductReqDto.class);
+
+		return new ResponseEntity<>(productService.create(productJson, file), HttpStatus.CREATED);
 	}
 
 	@Operation(summary = "Obtener productos activos", description = "Obtener todos los productos activos")
@@ -47,8 +53,9 @@ public class ProductController {
 			@ApiResponse(responseCode = "404", description = "Producto no encontrado")
 	})
 	@PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<MessageResDto> update(@RequestPart("product") ProductReqDto productReqDto, @RequestPart(required = false) MultipartFile file, @PathVariable String id) throws IOException {
-		return new ResponseEntity<>(productService.updateById(productReqDto, file, id), HttpStatus.OK);
+	public ResponseEntity<MessageResDto> update(@RequestParam("product") String productReqDto, @RequestPart(required = false) MultipartFile file, @PathVariable String id) throws IOException {
+        ProductReqDto productJson = objectMapper.readValue(productReqDto, ProductReqDto.class);
+        return new ResponseEntity<>(productService.updateById(productJson, file, id), HttpStatus.OK);
 	}
 
 	@Operation(summary = "Eliminar producto", description = "Eliminar un producto")

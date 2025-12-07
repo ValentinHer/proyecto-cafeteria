@@ -1,6 +1,8 @@
 package com.valentin.reservacion_citas.domain.service.implementation;
 
+import com.valentin.reservacion_citas.domain.service.MessageService;
 import com.valentin.reservacion_citas.domain.service.NotificationService;
+import com.valentin.reservacion_citas.persistence.entity.Message;
 import com.valentin.reservacion_citas.web.dto.request.EmailReqDto;
 import com.valentin.reservacion_citas.web.dto.response.MessageResDto;
 import com.valentin.reservacion_citas.web.exception.InternalServerException;
@@ -19,16 +21,18 @@ import org.thymeleaf.context.Context;
 public class NotificationServiceImpl implements NotificationService {
 	private final EmailSender emailSender;
 	private final TemplateEngine templateEngine;
+    private final MessageService messageService;
 	private static final Logger logger = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
 	@Value("${spring.mail.username}")
 	private String emailSendTo;
 
 	@Autowired
-	public NotificationServiceImpl(EmailSender emailSender, TemplateEngine templateEngine) {
+	public NotificationServiceImpl(EmailSender emailSender, TemplateEngine templateEngine, MessageService messageService) {
 		this.emailSender = emailSender;
 		this.templateEngine = templateEngine;
-	}
+        this.messageService = messageService;
+    }
 
 	private void sendConfirmationContactEmailToUser(EmailReqDto emailReqDto, Context context) {
 		context.setVariable("usuario", emailReqDto.getName());
@@ -50,6 +54,9 @@ public class NotificationServiceImpl implements NotificationService {
 		context.setVariable("correo", emailReqDto.getEmail());
 		context.setVariable("mensaje", emailReqDto.getMessage());
 
+        Message message = new Message();
+        message.setMessage(String.format("Haz recibido un nuevo mensaje desde tu sitio web: Café Klang, del usuario con nombre: %s, correo: %s, mensaje: %s", emailReqDto.getName(), emailReqDto.getEmail(), emailReqDto.getMessage()));
+
 		String htmlContent = templateEngine.process("contactOwner", context);
 
 		try {
@@ -57,6 +64,7 @@ public class NotificationServiceImpl implements NotificationService {
 			logger.info("Correo enviado de forma exitosa al email {} para realizar contacto por parte del usuario {} con email {}", emailSendTo, emailReqDto.getName(), emailReqDto.getEmail());
 
 			sendConfirmationContactEmailToUser(emailReqDto, context);
+            messageService.saveMessage(message);
 
 			return new MessageResDto("Correo enviado de forma exitosa", HttpStatus.OK.value());
 		} catch (MessagingException e) {

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class AppointmentReqDto {
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+    private String message;
 	private AppointmentStatus status;
 	private LocalDateTime createdAt;
 
@@ -26,7 +27,15 @@ public class AppointmentReqDto {
 		this.endTime = endTime;
 	}
 
-	public AppointmentStatus getStatus() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public AppointmentStatus getStatus() {
 		return status;
 	}
 

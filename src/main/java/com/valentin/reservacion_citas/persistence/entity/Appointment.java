@@ -1,5 +1,6 @@
 package com.valentin.reservacion_citas.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -22,6 +23,9 @@ public class Appointment {
 	@Column(name = "hora_fin", columnDefinition = "TIMESTAMP", nullable = false)
 	private LocalDateTime endTime;
 
+    @Column(name = "mensaje", columnDefinition = "TEXT")
+    private String message;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private AppointmentStatus status;
@@ -31,10 +35,12 @@ public class Appointment {
 
 	@ManyToOne
 	@JoinColumn(name = "id_invitado", referencedColumnName = "id_invitado", updatable = false)
+    @JsonIgnore
 	private Guest guest;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", updatable = false)
+    @JsonIgnore
 	private User user;
 
 	@LastModifiedDate
@@ -65,7 +71,15 @@ public class Appointment {
 		this.endTime = endTime;
 	}
 
-	public AppointmentStatus getStatus() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public AppointmentStatus getStatus() {
 		return status;
 	}
 

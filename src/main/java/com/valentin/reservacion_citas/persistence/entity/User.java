@@ -55,6 +55,9 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Payment> payments;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Message> messages;
+
 	@CreatedDate
 	@Column(name = "created_at", columnDefinition = "TIMESTAMP", nullable = false)
 	private LocalDateTime createdAt;
@@ -167,7 +170,15 @@ public class User {
 		this.payments = payments;
 	}
 
-	public LocalDateTime getCreatedAt() {
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 

@@ -45,16 +45,16 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 	@Value("${calendly.token}")
 	private String calendlyToken;
 
-	@Value("${calendly.org.url}")
+	//@Value("${calendly.org.url}")
 	private String calendlyOrgUrl;
 
-	@Value("${calendly.user.url}")
+	//@Value("${calendly.user.url}")
 	private String calendlyUserUrl;
 
 	@Value("${calendly.scope}")
 	private String calendlyScope;
 
-	@Value("${calendly.url.webhook.invitee.created}")
+	//@Value("${calendly.url.webhook.invitee.created}")
 	private String webhookUrlCallback;
 
 
@@ -102,7 +102,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 		return results;
 	}
 
-	@PostConstruct
+	//@PostConstruct
 	public void getOrCreateSubscription() {
 		WebhookCalendlyListSubscriptionsResDto subscriptions = getAllSubscription();
 		List<WebhookCalendlySubscriptionResDto> existSubscription = subscriptions.getCollection()
@@ -172,9 +172,18 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 
 	@Override
 	public void handleAppointmentCreated(WebhookAppointmentCreatedReqDto payload) {
+        String[] listDateAndTime = payload.getPayload()
+                .getScheduledEvent()
+                .getStartTime()
+                .toString()
+                .split("T");
+        String appointmentDate = listDateAndTime[0];
+        String appointmentHour = listDateAndTime[1];
+
 		AppointmentReqDto appointmentReqDto = new AppointmentReqDto();
 		appointmentReqDto.setStartTime(payload.getPayload().getScheduledEvent().getStartTime());
 		appointmentReqDto.setEndTime(payload.getPayload().getScheduledEvent().getEndTime());
+        appointmentReqDto.setMessage(String.format("Se ha realizado una reservación a nombre de %s , con los siguientes detalles: fecha: %s, hora: %s", payload.getPayload().getName(), appointmentDate, appointmentHour));
 		appointmentReqDto.setStatus(AppointmentStatus.valueOf(payload.getPayload().getScheduledEvent().getStatus().toUpperCase()));
 		appointmentReqDto.setCreatedAt(payload.getPayload().getScheduledEvent().getCreatedAt());
 
@@ -185,21 +194,13 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 
 		MessageResDto messageResDto = appointmentService.createAppointment(guestReqDto);
 
-		String[] listDateAndTime = payload.getPayload()
-										  .getScheduledEvent()
-										  .getStartTime()
-										  .toString()
-										  .split("T");
-		String appointmentDate = listDateAndTime[0];
-		String appointmentHour = listDateAndTime[1];
-
 		notificationService.sendAppointmentConfirmationEmail(payload.getPayload().getName(),
 														payload.getPayload().getEmail(),
 														appointmentDate,
 														appointmentHour);
 	}
 
-	//@PostConstruct
+	@PostConstruct
 	private void getCurrentUser() {
 		String payload = restClient.get()
 				.uri(calendlyApiUrl + "users/me")
