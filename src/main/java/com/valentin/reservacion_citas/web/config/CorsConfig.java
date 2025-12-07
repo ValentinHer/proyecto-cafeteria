@@ -15,7 +15,7 @@ public class CorsConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173", "https://proyecto-cafeteria-sooty.vercel.app"));
-		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
 		corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
 		corsConfiguration.setAllowCredentials(true);
 
