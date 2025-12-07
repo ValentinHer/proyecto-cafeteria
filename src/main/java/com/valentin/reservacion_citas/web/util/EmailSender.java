@@ -25,11 +25,15 @@ public class EmailSender {
 
     private final SendGrid sendGrid;
 
+    @Value("${sendgrid.sender}")
+    private final String sender;
+
 	private final JavaMailSenderImpl mailSender;
 
-	public EmailSender(@Value("${sendgrid.api.key}") String sendGridKey, JavaMailSenderImpl mailSender) {
+	public EmailSender(@Value("${sendgrid.api.key}") String sendGridKey, String sender, JavaMailSenderImpl mailSender) {
         this.sendGridKey = sendGridKey;
         this.sendGrid = new SendGrid(sendGridKey);
+        this.sender = sender;
         this.mailSender = mailSender;
 	}
 
@@ -48,7 +52,7 @@ public class EmailSender {
 
     public void sendEmail(String html, String sendEmailTo, String subject) throws IOException {
 
-        Email from = new Email("TUCORREO@tudominio.com"); // remitente autorizado en SendGrid
+        Email from = new Email(sender); // remitente autorizado en SendGrid
         Email to = new Email(sendEmailTo);
 
         // Cargar imagen inline
