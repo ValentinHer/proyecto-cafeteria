@@ -44,7 +44,7 @@ public class WebhookPayPalServiceImpl implements WebhookPayPalService {
 	@Value("${paypal.api.url}")
 	private String paypalApiUrl;
 
-	//@Value("${paypal.url.webhook.payment.capture.completed}")
+	@Value("${paypal.url.webhook.payment.capture.completed}")
 	private String webhookUrlPaymentCaptureCompleted;
 
 	@Value("${paypal.client-id}")
@@ -65,7 +65,7 @@ public class WebhookPayPalServiceImpl implements WebhookPayPalService {
 		this.objectMapper = objectMapper;
 	}
 
-	//@PostConstruct
+	@PostConstruct
 	private void initPayPalConfigWebhook() throws JsonProcessingException {
 		getPaypalAccessToken();
 		getOrCreateSubscription();

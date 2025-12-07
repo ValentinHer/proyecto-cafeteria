@@ -45,16 +45,16 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 	@Value("${calendly.token}")
 	private String calendlyToken;
 
-	//@Value("${calendly.org.url}")
+	@Value("${calendly.org.url}")
 	private String calendlyOrgUrl;
 
-	//@Value("${calendly.user.url}")
+	@Value("${calendly.user.url}")
 	private String calendlyUserUrl;
 
 	@Value("${calendly.scope}")
 	private String calendlyScope;
 
-	//@Value("${calendly.url.webhook.invitee.created}")
+	@Value("${calendly.url.webhook.invitee.created}")
 	private String webhookUrlCallback;
 
 
@@ -102,7 +102,7 @@ public class WebhookCalendlyServiceImpl implements WebhookCalendlyService {
 		return results;
 	}
 
-	//@PostConstruct
+	@PostConstruct
 	public void getOrCreateSubscription() {
 		WebhookCalendlyListSubscriptionsResDto subscriptions = getAllSubscription();
 		List<WebhookCalendlySubscriptionResDto> existSubscription = subscriptions.getCollection()
