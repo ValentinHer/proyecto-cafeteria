@@ -61,7 +61,7 @@ public class ProductMapper {
 		Optional.ofNullable(productReqDto.getName()).ifPresent(product::setName);
 		Optional.ofNullable(productReqDto.getCategoryId()).ifPresent(product::setCategoryId);
 		Optional.ofNullable(productReqDto.getDescription()).ifPresent(product::setDescription);
-		Optional.ofNullable(productReqDto.getStock()).ifPresent(product::setStock);
+		Optional.ofNullable(productReqDto.getStock()).ifPresent(stock -> product.setStock(stock + product.getStock()));
 		Optional.ofNullable(productReqDto.getPrice()).ifPresent(product::setPrice);
 		Optional.ofNullable(productReqDto.getIsActive()).ifPresent(product::setIsActive);
 	}
