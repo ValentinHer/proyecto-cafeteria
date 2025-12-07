@@ -27,7 +27,7 @@ public class EmailSender {
 
 	private final JavaMailSenderImpl mailSender;
 
-	public EmailSender(@Value("${calendly.api.url}") String sendGridKey, JavaMailSenderImpl mailSender) {
+	public EmailSender(@Value("${sendgrid.api.key}") String sendGridKey, JavaMailSenderImpl mailSender) {
         this.sendGridKey = sendGridKey;
         this.sendGrid = new SendGrid(sendGridKey);
         this.mailSender = mailSender;
