@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.io.IOException;
+
 @Service
 public class NotificationServiceImpl implements NotificationService {
 	private final EmailSender emailSender;
@@ -42,7 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
 		try {
 			emailSender.sendEmail(htmlContent, emailReqDto.getEmail(), "Gracias por contactarnos – Hemos recibido tu mensaje");
 			logger.info("Correo de confirmación de contacto enviado de forma exitosa al email {} del usuario {}", emailReqDto.getEmail(), emailReqDto.getName());
-		} catch (MessagingException e) {
+		} catch (IOException e) {
 			logger.error("No se pudo enviar el correo de confirmación de contacto al email {} del usuario {}", emailReqDto.getEmail(), emailReqDto.getName(), e);
 		}
 	}
@@ -67,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService {
             messageService.saveMessage(message);
 
 			return new MessageResDto("Correo enviado de forma exitosa", HttpStatus.OK.value());
-		} catch (MessagingException e) {
+		} catch (IOException e) {
 			logger.error("No se pudo enviar el correo al email {} para realizar contacto por parte del usuario {} con email {}", emailSendTo, emailReqDto.getName(), emailReqDto.getEmail(), e);
 			throw new InternalServerException("El Correo no se pudo enviar, por favor intente de nuevo");
 		}
@@ -85,7 +87,7 @@ public class NotificationServiceImpl implements NotificationService {
 		try {
 			emailSender.sendEmail(htmlContent, userEmail, "Reservación Confirmada");
 			logger.info("Correo enviado de forma exitosa al usuario {} con email {}", userName, userEmail);
-		} catch (MessagingException e) {
+		} catch (IOException e) {
 			logger.error("No se pudo enviar correo al usuario {} con email {}", userName, userEmail, e);
 		}
 	}
@@ -99,7 +101,7 @@ public class NotificationServiceImpl implements NotificationService {
 		try {
 			emailSender.sendEmail(htmlContent, userEmail, "Restaurar contraseña");
 			logger.info("Correo enviado de forma exitosa al usuario {} con email {}", userName, userEmail);
-		} catch (MessagingException e) {
+		} catch (IOException e) {
 			logger.error("No se pudo enviar correo al usuario {} con email {}", userName, userEmail, e);
 		}
 	}
